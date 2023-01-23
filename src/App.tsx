@@ -1,26 +1,32 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Box, createTheme, Theme, ThemeProvider } from "@mui/material";
+import AppBar from "./components/AppBar";
 
-function App() {
+/**
+ * Theme object, no styling will be done except for here.
+ */
+const THEME: Theme = createTheme();
+
+export default function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeProvider theme={THEME}>
+      <div className="app">
+        <AppBar />
+        <Body />
+      </div>
+    </ThemeProvider>
   );
 }
 
-export default App;
+function Body() {
+  return (
+    <div>
+      {/* Order these appropriately */}
+      <div id="abilities" />
+      <div id="bio" />
+      <div id="education" />
+      <div id="projects" />
+      <div id="references" />
+      <div id="resume" />
+    </div>
+  );
+}
