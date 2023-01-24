@@ -2,6 +2,7 @@ import { createTheme, CssBaseline, Theme, ThemeProvider } from "@mui/material";
 import AppBar from "./components/AppBar";
 
 const defaultTheme = createTheme();
+const font = "'Courier New', Courier, monospace";
 
 /**
  * Theme object, no styling will be done except for here.
@@ -20,6 +21,11 @@ const THEME: Theme = createTheme(defaultTheme, {
           // Basically a separator to float content right
           "& .MuiBox-root": { flexGrow: 1 },
         },
+      },
+    },
+    MuiTypography: {
+      defaultProps: {
+        fontFamily: font,
       },
     },
   },
