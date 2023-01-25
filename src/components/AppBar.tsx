@@ -14,14 +14,14 @@ import {
   styled,
   Toolbar,
   Tooltip,
+  Typography,
 } from "@mui/material";
 
 // Icons
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
-import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
-import EducationIcon from "@mui/icons-material/School";
 import FileOpenIcon from "@mui/icons-material/FileOpen";
 import GitHubIcon from "@mui/icons-material/GitHub";
+import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import MenuIcon from "@mui/icons-material/Menu";
 import MessageIcon from "@mui/icons-material/Message";
 import MoreIcon from "@mui/icons-material/MoreVert";
@@ -29,7 +29,7 @@ import ReferencesIcon from "@mui/icons-material/PeopleAlt";
 import SearchIcon from "@mui/icons-material/Search";
 
 // Utility code
-import { openResume } from "../utils";
+import { openLink, scrollElementIntoView } from "../utils";
 
 const MenuCollapse = styled(Collapse, {
   shouldForwardProp: (prop) => prop !== "placement",
@@ -40,6 +40,7 @@ const MenuCollapse = styled(Collapse, {
   "& .MuiDivider-root": { backgroundColor: "#fff", margin: theme.spacing(1) },
   width: "100%",
   position: "fixed",
+  zIndex: 2,
 
   ...(placement === "bottom" && {
     bottom: 0,
@@ -64,7 +65,7 @@ const StyledFab = styled(Fab, {
   shouldForwardProp: (prop) => prop !== "expanded",
 })<{ expanded: boolean }>(({ theme, expanded }) => ({
   position: "absolute",
-  zIndex: 1,
+  zIndex: 3,
   top: -30,
   left: 0,
   right: 0,
@@ -97,12 +98,18 @@ export default function AppBar() {
     <>
       <MenuCollapse placement="bottom" in={expanded}>
         <Box>
-          <MenuList />
+          <MenuList onCloseMenu={handleExpandChange} />
         </Box>
         <Toolbar />
       </MenuCollapse>
       <MuiAppBar>
         <Toolbar>
+          <Typography
+            sx={{ display: { xs: "none", sm: "flex" } }}
+            className="portfolio__title"
+          >
+            Edward's Portfolio
+          </Typography>
           <IconButton color="inherit" onClick={handleExpandChange}>
             <MenuIcon />
           </IconButton>
@@ -121,7 +128,7 @@ export default function AppBar() {
       <MenuCollapse placement="top" in={expanded}>
         <Toolbar />
         <Box>
-          <MenuList />
+          <MenuList onCloseMenu={handleExpandChange} />
         </Box>
       </MenuCollapse>
     </>
@@ -131,52 +138,48 @@ export default function AppBar() {
 /**
  * Menu for desktop/mobile viewing
  *
+ * @param props -
+ * @param props.onCloseMenu - Closes the menu
  * @returns JSX.Element
  */
-function MenuList() {
+function MenuList({ onCloseMenu }: { onCloseMenu: () => void }) {
+  const handleClick = (id: string) => {
+    scrollElementIntoView(id);
+    onCloseMenu();
+  };
   return (
     <List>
       <ListItem className="padding" />
       <Divider />
 
       <ListItem>
-        <ListItemButton>
+        <ListItemButton
+          onClick={() =>
+            openLink(
+              "https://www.linkedin.com/in/edward-kyle-thomas-b7050b204/?trk=public-profile-join-page"
+            )
+          }
+        >
           <ListItemIcon>
-            <AdminPanelSettingsIcon />
+            <LinkedInIcon />
           </ListItemIcon>
-          <ListItemText primary="Skills" />
+          <Tooltip
+            placement="bottom-start"
+            title="Opens in new tab of your browser."
+          >
+            <ListItemText primary="LinkedIn" />
+          </Tooltip>
         </ListItemButton>
       </ListItem>
 
       <ListItem>
-        <ListItemButton>
-          <ListItemIcon>
-            <AccountBoxIcon />
-          </ListItemIcon>
-          <ListItemText primary="Bio" />
-        </ListItemButton>
-      </ListItem>
-
-      <ListItem>
-        <ListItemButton>
-          <ListItemIcon>
-            <GitHubIcon />
-          </ListItemIcon>
-          <ListItemText primary="Projects" />
-        </ListItemButton>
-      </ListItem>
-
-      <ListItem>
-        <ListItemButton>
-          <ListItemIcon>
-            <ReferencesIcon />
-          </ListItemIcon>
-          <ListItemText primary="References" />
-        </ListItemButton>
-      </ListItem>
-
-      <ListItem>
-        <ListItemButton onClick={openResume}>
+        <ListItemButton
+          onClick={() =>
+            openLink(
+              "https://docs.google.com/document/d/1LDzMgp_i8amZWFCHoO_rnBQTyUY35tb2xmDQFOgtaZ8/edit"
+            )
+          }
+        >
           <ListItemIcon>
             <FileOpenIcon />
           </ListItemIcon>
@@ -190,11 +193,29 @@ function MenuList() {
       </ListItem>
 
       <ListItem>
-        <ListItemButton>
+        <ListItemButton onClick={() => handleClick("#bio")}>
           <ListItemIcon>
-            <EducationIcon />
+            <AccountBoxIcon />
           </ListItemIcon>
-          <ListItemText primary="Education" />
+          <ListItemText primary="Bio" />
+        </ListItemButton>
+      </ListItem>
+
+      <ListItem>
+        <ListItemButton onClick={() => handleClick("#projects")}>
+          <ListItemIcon>
+            <GitHubIcon />
+          </ListItemIcon>
+          <ListItemText primary="Projects" />
+        </ListItemButton>
+      </ListItem>
+
+      <ListItem>
+        <ListItemButton onClick={() => handleClick("#references")}>
+          <ListItemIcon>
+            <ReferencesIcon />
+          </ListItemIcon>
+          <ListItemText primary="References" />
         </ListItemButton>
       </ListItem>
 
