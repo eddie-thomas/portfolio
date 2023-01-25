@@ -18,7 +18,7 @@ type KnownLinks =
  * @param string The string to be copied to clipboard
  * @return returns a boolean correspondent to the success of the copy operation.
  */
-function copyTextToClipboard(string: string) {
+function copyTextToClipboard(string: string): boolean {
   let result;
 
   /**
@@ -101,5 +101,18 @@ function scrollElementIntoView(identifier: string): void {
   });
 }
 
-export { copyTextToClipboard, openLink, scrollElementIntoView };
+/**
+ * To pascal case
+ *
+ * @param value - String that is meant to be `snake cased` and will be properly formatted into Pascal case with `_` being interpreted as spaces
+ * @returns string
+ */
+function toPascalCase(value: string): string {
+  return value
+    .split("_")
+    .map((word: string) => `${word[0].toUpperCase()}${word.slice(1)}`)
+    .join(" ");
+}
+
+export { copyTextToClipboard, openLink, scrollElementIntoView, toPascalCase };
 export type { KnownLinks };

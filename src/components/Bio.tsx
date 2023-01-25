@@ -1,9 +1,18 @@
 import { Box, Divider, Typography } from "@mui/material";
 
 import { BIO } from "../content";
-import { type KnownLinks, openLink } from "../utils";
+import { type KnownLinks, openLink, toPascalCase } from "../utils";
 import CopyButton from "./CopyButton";
 
+/**
+ * Biography component
+ *
+ * Notes:
+ * - This component is kind of messy, but I wanted more general code, so I can edit the content
+ * how I want and not have to worry about how it's rendered all that much
+ *
+ * @returns JSX.Element
+ */
 export default function Bio() {
   return (
     <Box>
@@ -19,16 +28,21 @@ export default function Bio() {
 
         return mapComponentsToContent({
           content,
-          title: title
-            .split("_")
-            .map((word: string) => `${word[0].toUpperCase()}${word.slice(1)}`)
-            .join(" "),
+          title: toPascalCase(title),
         });
       })}
     </Box>
   );
 }
 
+/**
+ * Mapping a component to data
+ *
+ * @param props -
+ * @param props.content - The content being display, can be any number of things (arrays, objects, strings, etc.)
+ * @param props.title - Title of the section (e.g. "phone number")
+ * @returns JSX.Element
+ */
 function mapComponentsToContent({
   content,
   title,
@@ -44,7 +58,10 @@ function mapComponentsToContent({
           {typeof content === "string" && (
             <>
               <Divider orientation="vertical" flexItem sx={{ mx: 3 }} />
-              <CopyButton content={content} />
+              <CopyButton
+                content={content}
+                name={`Edward's ${title.toLowerCase()}`}
+              />
             </>
           )}
         </Typography>
@@ -94,12 +111,18 @@ function mapComponentsToContent({
   );
 }
 
-function linkifyString(content: string) {
+/**
+ * Turn the link, a string, into an Element
+ *
+ * @param content - The link that, must be known, to open a separate tab as a string
+ * @returns JSX.Element
+ */
+export function linkifyString(content: string) {
   // Type the content as expected
   const typedContent = content as KnownLinks;
   return (
-    <a href="#/" onClick={() => openLink(typedContent)}>
-      <Box sx={{ overflowX: "auto" }}>{content}</Box>
+    <a href="/#" onClick={() => openLink(typedContent)}>
+      <Box>{content}</Box>
     </a>
   );
 }

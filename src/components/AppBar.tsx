@@ -16,6 +16,7 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
+import { useSnackbar } from "notistack";
 
 // Icons
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
@@ -31,6 +32,7 @@ import SearchIcon from "@mui/icons-material/Search";
 // Utility code
 import { openLink, scrollElementIntoView } from "../utils";
 
+// Styled components
 const MenuCollapse = styled(Collapse, {
   shouldForwardProp: (prop) => prop !== "placement",
 })<{ placement: "top" | "bottom" }>(({ theme, placement }) => ({
@@ -85,13 +87,22 @@ const StyledFab = styled(Fab, {
  */
 export default function AppBar() {
   const [expanded, setExpanded] = useState<boolean>(false);
+  const { enqueueSnackbar } = useSnackbar();
 
+  /**
+   * Handler for expanding/collapsing the menu
+   */
   const handleExpandChange = () => {
     setExpanded((prevExpanded) => !prevExpanded);
   };
 
+  /**
+   * Handler for opening dialog to message Eddie
+   *
+   * @todo Write up a message dialog for this
+   */
   const handleMessageSend = () => {
-    console.log("Send message!");
+    enqueueSnackbar(<Typography>Not implemented yet.</Typography>);
   };
 
   return (
@@ -117,10 +128,10 @@ export default function AppBar() {
             <MessageIcon />
           </StyledFab>
           <Box />
-          <IconButton color="inherit">
+          <IconButton color="inherit" onClick={handleMessageSend}>
             <SearchIcon />
           </IconButton>
-          <IconButton color="inherit">
+          <IconButton color="inherit" onClick={handleMessageSend}>
             <MoreIcon />
           </IconButton>
         </Toolbar>
@@ -143,14 +154,47 @@ export default function AppBar() {
  * @returns JSX.Element
  */
 function MenuList({ onCloseMenu }: { onCloseMenu: () => void }) {
+  /**
+   * Handler for when a menu button is clicked
+   *
+   * @param id - The `id` of the element
+   */
   const handleClick = (id: string) => {
     scrollElementIntoView(id);
     onCloseMenu();
   };
+
   return (
     <List>
       <ListItem className="padding" />
       <Divider />
+
+      <ListItem>
+        <ListItemButton onClick={() => handleClick("#bio")}>
+          <ListItemIcon>
+            <AccountBoxIcon />
+          </ListItemIcon>
+          <ListItemText primary="Bio" />
+        </ListItemButton>
+      </ListItem>
+
+      <ListItem>
+        <ListItemButton onClick={() => handleClick("#projects")}>
+          <ListItemIcon>
+            <GitHubIcon />
+          </ListItemIcon>
+          <ListItemText primary="Projects" />
+        </ListItemButton>
+      </ListItem>
+
+      <ListItem>
+        <ListItemButton onClick={() => handleClick("#references")}>
+          <ListItemIcon>
+            <ReferencesIcon />
+          </ListItemIcon>
+          <ListItemText primary="References" />
+        </ListItemButton>
+      </ListItem>
 
       <ListItem>
         <ListItemButton
@@ -189,33 +233,6 @@ function MenuList({ onCloseMenu }: { onCloseMenu: () => void }) {
           >
             <ListItemText primary="Resume/CV" />
           </Tooltip>
-        </ListItemButton>
-      </ListItem>
-
-      <ListItem>
-        <ListItemButton onClick={() => handleClick("#bio")}>
-          <ListItemIcon>
-            <AccountBoxIcon />
-          </ListItemIcon>
-          <ListItemText primary="Bio" />
-        </ListItemButton>
-      </ListItem>
-
-      <ListItem>
-        <ListItemButton onClick={() => handleClick("#projects")}>
-          <ListItemIcon>
-            <GitHubIcon />
-          </ListItemIcon>
-          <ListItemText primary="Projects" />
-        </ListItemButton>
-      </ListItem>
-
-      <ListItem>
-        <ListItemButton onClick={() => handleClick("#references")}>
-          <ListItemIcon>
-            <ReferencesIcon />
-          </ListItemIcon>
-          <ListItemText primary="References" />
         </ListItemButton>
       </ListItem>
 

@@ -12,12 +12,14 @@ import "./App.css";
 import Projects from "./components/Projects";
 import References from "./components/References";
 import Resume from "./components/Resume";
+import { SnackbarProvider } from "notistack";
 
 const defaultTheme = createTheme();
 const font = "'Courier New', Courier, monospace";
 
 /**
- * Theme object, no styling will be done except for here.
+ * Theme object, aside from styled components, and a bit of inline work,
+ * everything to do with theming will be done here.
  */
 const THEME: Theme = createTheme(defaultTheme, {
   components: {
@@ -43,36 +45,40 @@ const THEME: Theme = createTheme(defaultTheme, {
   },
 });
 
+/**
+ * Top-level app component
+ *
+ * @returns JSX.Element
+ */
 export default function App() {
   return (
     <ThemeProvider theme={THEME}>
       <CssBaseline />
-      <div className="App">
-        <AppBar />
-        <Toolbar sx={{ display: { xs: "none", sm: "block" } }} />
-        <Body />
-        <Toolbar sx={{ display: { xs: "block", sm: "unset" }, my: 3 }} />
-      </div>
+      <SnackbarProvider maxSnack={3}>
+        <div className="App">
+          <AppBar />
+          <Toolbar sx={{ display: { xs: "none", sm: "block" } }} />
+          <Body />
+          <Toolbar sx={{ display: { xs: "block", sm: "unset" }, my: 3 }} />
+        </div>
+      </SnackbarProvider>
     </ThemeProvider>
   );
 }
 
+/**
+ * Body of the portfolio
+ *
+ * @returns JSX.Element
+ */
 function Body() {
   return (
     <>
       {/* Order these appropriately */}
-      <div className="section" id="resume">
-        <Resume />
-      </div>
-      <div className="section">
-        <Bio />
-      </div>
-      <div className="section" id="projects">
-        <Projects />
-      </div>
-      <div className="section" id="references">
-        <References />
-      </div>
+      <Bio />
+      <Projects />
+      <References />
+      <Resume />
     </>
   );
 }

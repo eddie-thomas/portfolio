@@ -9,6 +9,11 @@ const ResumeButton = styled(Button)(() => ({
   justifyContent: "left",
 }));
 
+/**
+ * Resume button that opens resume in a separate tab
+ *
+ * @returns JSX.Element
+ */
 export default function Resume() {
   return (
     <ResumeButton
