@@ -87,7 +87,7 @@ const StyledFab = styled(Fab, {
  */
 export default function AppBar() {
   const [expanded, setExpanded] = useState<boolean>(false);
-  const { enqueueSnackbar } = useSnackbar();
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
   /**
    * Handler for expanding/collapsing the menu
@@ -102,7 +102,9 @@ export default function AppBar() {
    * @todo Write up a message dialog for this
    */
   const handleMessageSend = () => {
-    enqueueSnackbar(<Typography>Not implemented yet.</Typography>);
+    const id = enqueueSnackbar(<Typography>Not implemented yet.</Typography>, {
+      onClick: () => closeSnackbar(id),
+    });
   };
 
   return (

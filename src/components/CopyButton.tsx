@@ -1,5 +1,5 @@
 import { IconButton, Tooltip, Typography } from "@mui/material";
-import { useSnackbar } from "notistack";
+import { type SnackbarKey, useSnackbar } from "notistack";
 import FileCopyOutlinedIcon from "@mui/icons-material/FileCopyOutlined";
 
 import { copyTextToClipboard } from "../utils";
@@ -19,20 +19,22 @@ export default function CopyButton({
   content: string;
   name?: string;
 }) {
-  const { enqueueSnackbar } = useSnackbar();
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
   /**
    * Handler for click event that copy's content
    */
   const handleClick = () => {
     const didCopy = copyTextToClipboard(content);
-    didCopy &&
-      enqueueSnackbar(
-        <Typography>Copied{` ${name}` ?? ""} to clipboard!</Typography>,
-        {
-          variant: "success",
-        }
-      );
+    const id: SnackbarKey | undefined = didCopy
+      ? enqueueSnackbar(
+          <Typography>Copied{` ${name}` ?? ""} to clipboard!</Typography>,
+          {
+            variant: "success",
+            onClick: () => closeSnackbar(id),
+          }
+        )
+      : undefined;
   };
 
   return (

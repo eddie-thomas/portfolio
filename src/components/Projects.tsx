@@ -141,7 +141,7 @@ export default function Projects() {
  * @returns
  */
 function ProjectStatus({ status }: { status: Status }) {
-  const { enqueueSnackbar } = useSnackbar();
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
   /**
    * Icon to render
@@ -176,7 +176,9 @@ function ProjectStatus({ status }: { status: Status }) {
    * - Mainly for mobile use, so a user can get some description as a notification about what the icon means
    */
   const handleClick = () => {
-    enqueueSnackbar(<Typography>{description}</Typography>);
+    const id = enqueueSnackbar(<Typography>{description}</Typography>, {
+      onClick: () => closeSnackbar(id),
+    });
   };
 
   return (
