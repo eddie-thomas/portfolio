@@ -1,10 +1,18 @@
-type KnownLinks =
-  | "https://github.com/eddie-thomas"
-  | "https://github.com/thom8047"
-  | "https://github.com/RamosThomas"
-  | "https://stackoverflow.com/users/14258470/lua-python-java"
-  | "https://docs.google.com/document/d/1LDzMgp_i8amZWFCHoO_rnBQTyUY35tb2xmDQFOgtaZ8/edit"
-  | "https://www.linkedin.com/in/edward-kyle-thomas-b7050b204/?trk=public-profile-join-page";
+/**
+ * Known links for security purposes
+ */
+const KNOWN_LINKS = [
+  "https://github.com/eddie-thomas",
+  "https://github.com/thom8047",
+  "https://github.com/RamosThomas",
+  "https://stackoverflow.com/users/14258470/lua-python-java",
+  "https://docs.google.com/document/d/1LDzMgp_i8amZWFCHoO_rnBQTyUY35tb2xmDQFOgtaZ8/edit",
+  "https://www.linkedin.com/in/edward-kyle-thomas-b7050b204/?trk=public-profile-join-page",
+  "https://github.com/eddie-thomas/FinancialReact",
+  "https://github.com/eddie-thomas/rpi-security",
+  "https://github.com/eddie-thomas/Practice-Projects",
+  "https://github.com/thom8047/FinancialReacts_v1.0.0",
+];
 
 /**
  * Copy a string to clipboard
@@ -78,10 +86,10 @@ function copyTextToClipboard(string: string): boolean {
 /**
  * Click handler to open a link in a separate tab
  *
- * @param link - One of the known links @see {KnownLinks}
+ * @param link - One of the known links @see {KNOWN_LINKS}
  */
-function openLink(link: KnownLinks) {
-  window.open(link, "_blank")?.focus();
+function openLink(link: string) {
+  if (KNOWN_LINKS.includes(link)) window.open(link, "_blank")?.focus();
   return false;
 }
 
@@ -115,4 +123,3 @@ function toPascalCase(value: string): string {
 }
 
 export { copyTextToClipboard, openLink, scrollElementIntoView, toPascalCase };
-export type { KnownLinks };

@@ -1,7 +1,8 @@
+import { type ReactNode } from "react";
 import { Box, Divider, Typography } from "@mui/material";
 
 import { BIO } from "../content";
-import { type KnownLinks, openLink, toPascalCase } from "../utils";
+import { openLink, toPascalCase } from "../utils";
 import CopyButton from "./CopyButton";
 
 /**
@@ -16,7 +17,7 @@ import CopyButton from "./CopyButton";
 export default function Bio() {
   return (
     <Box>
-      <Typography id="bio" variant="h4" sx={{ pl: 1 }}>
+      <Typography id="bio" variant="h3" textAlign="center" sx={{ pl: 1 }}>
         Biography
       </Typography>
       {Object.keys(BIO).map((title) => {
@@ -31,6 +32,7 @@ export default function Bio() {
           title: toPascalCase(title),
         });
       })}
+      <Divider sx={{ m: 3 }} />
     </Box>
   );
 }
@@ -53,7 +55,7 @@ function mapComponentsToContent({
   return (
     <div className="bio__content" key={JSON.stringify(content)}>
       {title && (
-        <Typography sx={{ display: "flex" }} component={"div"} variant="h5">
+        <Typography sx={{ display: "flex" }} component={"h5"} variant="h5">
           {title}
           {typeof content === "string" && (
             <>
@@ -115,14 +117,15 @@ function mapComponentsToContent({
  * Turn the link, a string, into an Element
  *
  * @param content - The link that, must be known, to open a separate tab as a string
+ * @param linkText - String that will be injected in place of the link
  * @returns JSX.Element
  */
-export function linkifyString(content: string) {
+export function linkifyString(content: string, linkText?: ReactNode) {
   // Type the content as expected
-  const typedContent = content as KnownLinks;
+  const typedContent = content;
   return (
     <a href="/#" onClick={() => openLink(typedContent)}>
-      <Box>{content}</Box>
+      <Box>{linkText ?? content}</Box>
     </a>
   );
 }

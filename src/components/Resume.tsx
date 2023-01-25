@@ -2,11 +2,12 @@ import { Button, Divider, styled, Typography } from "@mui/material";
 import FileOpenIcon from "@mui/icons-material/FileOpen";
 import { openLink } from "../utils";
 
+// Styled components
 const ResumeButton = styled(Button)(() => ({
   textTransform: "capitalize",
   width: "100%",
   display: "flex",
-  justifyContent: "left",
+  justifyContent: "center",
 }));
 
 /**
@@ -24,7 +25,7 @@ export default function Resume() {
         )
       }
     >
-      <Typography variant="h4">Resume/CV</Typography>
+      <Typography variant="h3">Resume/CV</Typography>
       <Divider orientation="vertical" flexItem sx={{ mx: 3 }} />
       <FileOpenIcon />
     </ResumeButton>

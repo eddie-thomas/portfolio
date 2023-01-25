@@ -5,9 +5,9 @@ export enum Status {
   Complete,
 }
 
-interface ContentType {
+export interface ContentType {
   description: string;
-  status?: Status;
+  status: Status;
   last_updated: Date;
   name: string;
   notes?: Array<string>;
@@ -23,31 +23,34 @@ interface ContentType {
  */
 export const PROJECTS: Array<ContentType> = [
   {
-    name: "FinancialReact",
+    name: "Financial React",
     project: "https://github.com/eddie-thomas/FinancialReact",
     description: `A financial planner for parsing Wells Fargo PDF statements.
     The backend can read credit, debit, and savings statements. Currently has
     been tested with statements ranging from 2016 to 2022.`,
     notes: [
-      "I attempted this project when I first got out of college, and it was a failure. Not the best code and the method I chose did not scale well with time. See the project here: https://github.com/thom8047/FinancialReacts_v1.0.0",
+      `I attempted this project when I first got out of college, and it was a failure.
+      Not the best code and the method I chose did not scale well with time. See the following note.`,
+      "https://github.com/thom8047/FinancialReacts_v1.0.0\nView old project here.",
     ],
     status: Status.Complete,
     last_updated: new Date("01/22/2023"),
   },
   {
-    name: "rpi-security (DIY Security System)",
+    name: "Rpi-Security (DIY Security System)",
     project: "https://github.com/eddie-thomas/rpi-security",
     description: `Home-made security system built onto 32-bit OS of Debian Bullseye.
     Built using a RaspberryPi, and an HC-SR501 motion sensor for detecting motion
     activity. This project was super fun because I got to work on asynchronous behavior
     in python and work some hardware skills! I made my own meter-length wires to connect
-    to the motion sensor.`,
+    to the motion sensor. Created a Lego-built container that neatly holds the sensor and 
+    the camera, and has an attached rig that I can mount and move around.`,
     status: Status.Finished,
     notes: [
       "Very simple project.",
       "Built the camera/motion sensor case in legos!",
       "Used nice wire wrapping to conceal the camera wire and the sensor's wires.",
-      "Video footage currently lives on my Pi.",
+      "Video footage currently lives on the Pi (hope to move this to external USB connected to the Pi).",
       "Night-vision camera is used!",
       "Terminus (on iOS) is used for external access to the Pi.",
     ],

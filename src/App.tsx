@@ -5,14 +5,15 @@ import {
   ThemeProvider,
   Toolbar,
 } from "@mui/material";
-import AppBar from "./components/AppBar";
-import Bio from "./components/Bio";
+import { SnackbarProvider } from "notistack";
 
 import "./App.css";
+
+import AppBar from "./components/AppBar";
+import Bio from "./components/Bio";
 import Projects from "./components/Projects";
 import References from "./components/References";
 import Resume from "./components/Resume";
-import { SnackbarProvider } from "notistack";
 
 const defaultTheme = createTheme();
 const font = "'Courier New', Courier, monospace";

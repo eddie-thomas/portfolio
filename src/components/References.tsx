@@ -1,7 +1,9 @@
 import { Box, Divider, styled, Typography } from "@mui/material";
+
+import CopyButton from "./CopyButton";
+
 import { REFERENCES } from "../content";
 import { toPascalCase } from "../utils";
-import CopyButton from "./CopyButton";
 
 // Styled components
 const StyledEmail = styled("div")(() => ({
@@ -25,12 +27,19 @@ const StyledEmailContainer = styled(Box)(({ theme }) => ({
 }));
 
 /**
- * References
+ * References component
+ *
+ * @returns JSX.Element
  */
 export default function References() {
   return (
     <div>
-      <Typography id="references" variant="h4" sx={{ pl: 1 }}>
+      <Typography
+        id="references"
+        variant="h3"
+        textAlign="center"
+        sx={{ pl: 1 }}
+      >
         References
       </Typography>
       <br />

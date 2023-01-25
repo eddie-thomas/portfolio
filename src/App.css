@@ -3,12 +3,8 @@
   overflow-x: hidden;
 }
 
-.App > div {
-  width: 100%;
-}
-
 .bio__content {
-  margin: 16px 5%;
+  margin: 16px 24px;
   display: block;
   max-width: 100%;
 }
@@ -23,5 +19,5 @@
 }
 
 .bio__content .MuiTypography-root:not(h5) {
-  margin-left: 10px;
+  padding-left: 10px;
 }

@@ -27,7 +27,6 @@ import MenuIcon from "@mui/icons-material/Menu";
 import MessageIcon from "@mui/icons-material/Message";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import ReferencesIcon from "@mui/icons-material/PeopleAlt";
-import SearchIcon from "@mui/icons-material/Search";
 
 // Utility code
 import { openLink, scrollElementIntoView } from "../utils";
@@ -43,7 +42,8 @@ const MenuCollapse = styled(Collapse, {
   width: "100%",
   position: "fixed",
   zIndex: 2,
-
+  maxHeight: "100vh",
+  overflowY: "auto",
   ...(placement === "bottom" && {
     bottom: 0,
     top: "auto",
@@ -83,7 +83,7 @@ const StyledFab = styled(Fab, {
 /**
  * App bar for desktop/mobile viewing
  *
- * @returns JSX.element
+ * @returns JSX.Element
  */
 export default function AppBar() {
   const [expanded, setExpanded] = useState<boolean>(false);
@@ -128,8 +128,12 @@ export default function AppBar() {
             <MessageIcon />
           </StyledFab>
           <Box />
-          <IconButton color="inherit" onClick={handleMessageSend}>
-            <SearchIcon />
+          <IconButton
+            sx={{ display: { xs: "none", sm: "inherit" } }}
+            color="inherit"
+            onClick={handleMessageSend}
+          >
+            <MessageIcon />
           </IconButton>
           <IconButton color="inherit" onClick={handleMessageSend}>
             <MoreIcon />
@@ -168,7 +172,6 @@ function MenuList({ onCloseMenu }: { onCloseMenu: () => void }) {
     <List>
       <ListItem className="padding" />
       <Divider />
-
       <ListItem>
         <ListItemButton onClick={() => handleClick("#bio")}>
           <ListItemIcon>
@@ -177,7 +180,6 @@ function MenuList({ onCloseMenu }: { onCloseMenu: () => void }) {
           <ListItemText primary="Bio" />
         </ListItemButton>
       </ListItem>
-
       <ListItem>
         <ListItemButton onClick={() => handleClick("#projects")}>
           <ListItemIcon>
@@ -186,7 +188,6 @@ function MenuList({ onCloseMenu }: { onCloseMenu: () => void }) {
           <ListItemText primary="Projects" />
         </ListItemButton>
       </ListItem>
-
       <ListItem>
         <ListItemButton onClick={() => handleClick("#references")}>
           <ListItemIcon>
@@ -195,7 +196,6 @@ function MenuList({ onCloseMenu }: { onCloseMenu: () => void }) {
           <ListItemText primary="References" />
         </ListItemButton>
       </ListItem>
-
       <ListItem>
         <ListItemButton
           onClick={() =>
@@ -215,7 +215,6 @@ function MenuList({ onCloseMenu }: { onCloseMenu: () => void }) {
           </Tooltip>
         </ListItemButton>
       </ListItem>
-
       <ListItem>
         <ListItemButton
           onClick={() =>
@@ -235,7 +234,6 @@ function MenuList({ onCloseMenu }: { onCloseMenu: () => void }) {
           </Tooltip>
         </ListItemButton>
       </ListItem>
-
       <Divider />
       <ListItem className="padding" />
     </List>
