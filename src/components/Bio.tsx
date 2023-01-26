@@ -124,7 +124,7 @@ export function linkifyString(content: string, linkText?: ReactNode) {
   // Type the content as expected
   const typedContent = content;
   return (
-    <a href="/#" onClick={() => openLink(typedContent)}>
+    <a href="/portfolio" onClick={() => openLink(typedContent)}>
       <Box>{linkText ?? content}</Box>
     </a>
   );
