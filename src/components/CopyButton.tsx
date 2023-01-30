@@ -1,3 +1,8 @@
+/**
+ * @copyright Copyright © 2018 - 2023 by Edward K Thomas Jr
+ * @license GNU GENERAL PUBLIC LICENSE https://www.gnu.org/licenses/gpl-3.0.en.html
+ */
+
 import { IconButton, Tooltip, Typography } from "@mui/material";
 import { type SnackbarKey, useSnackbar } from "notistack";
 import FileCopyOutlinedIcon from "@mui/icons-material/FileCopyOutlined";
