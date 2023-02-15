@@ -28,6 +28,20 @@ export interface ContentType {
  */
 export const PROJECTS: Array<ContentType> = [
   {
+    name: "Docusign-ALT",
+    project: "https://github.com/eddie-thomas/docusign-alt",
+    description: `A friend of mine from college who runs a Jet ski rental business in Florida requested
+    I build him a web app that allows his clients/users to fill in a simple form online then autogenerates
+    a PDF his jet ski waiver for liability purposes. He previously was using Docusign, but wanted a free,
+    alternative solution.`,
+    status: Status.Started,
+    notes: [
+      "This project is on-going and more notes will be added as the project nears an end.",
+      `Results are expected as of ${new Date("03/15/2023").toDateString()}.`,
+    ],
+    last_updated: new Date("02/15/2023"),
+  },
+  {
     name: "Financial React",
     project: "https://github.com/eddie-thomas/FinancialReact",
     description: `A financial planner for parsing Wells Fargo PDF statements.
@@ -50,7 +64,7 @@ export const PROJECTS: Array<ContentType> = [
     in python and work some hardware skills! I made my own meter-length wires to connect
     to the motion sensor. Created a Lego-built container that neatly holds the sensor and 
     the camera, and has an attached rig that I can mount and move around.`,
-    status: Status.Finished,
+    status: Status.Complete,
     notes: [
       "Very simple project.",
       "Built the camera/motion sensor case in legos!",
@@ -66,17 +80,7 @@ export const PROJECTS: Array<ContentType> = [
       "Move video storage to an external USB, and add a schedule script to delete old video files periodically.",
       "Tentative: Create YouTube video for submission to Google to ask for use of the Google Drive API to post video footage to my Google drive.",
     ],
-    last_updated: new Date("01/22/2023"),
-  },
-  {
-    name: "Practice Projects",
-    project: "https://github.com/eddie-thomas/Practice-Projects",
-    description: `Projects to grow my skill-set and challenge myself, thoughtfully and programmatically.`,
-    status: Status.Started,
-    notes: [
-      "This project will likely never have an end, I hope to build it up to be a fairly large repo.",
-    ],
-    last_updated: new Date("01/22/2023"),
+    last_updated: new Date("02/03/2023"),
   },
 ];
 
