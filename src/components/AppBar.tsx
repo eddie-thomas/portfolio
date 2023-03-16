@@ -36,6 +36,9 @@ import ReferencesIcon from "@mui/icons-material/PeopleAlt";
 // Utility code
 import { openLink, scrollElementIntoView } from "../utils";
 
+// Email dialog component
+import EmailDialog from "./EmailDialog";
+
 // Styled components
 const MenuCollapse = styled(Collapse, {
   shouldForwardProp: (prop) => prop !== "placement",
@@ -91,8 +94,18 @@ const StyledFab = styled(Fab, {
  * @returns JSX.Element
  */
 export default function AppBar() {
+  const [emailDialogOpen, setEmailDialogOpen] = useState<boolean>(false);
   const [expanded, setExpanded] = useState<boolean>(false);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+
+  /**
+   * Handler for opening/closing the email dialog
+   *
+   * @param open - Boolean stating whether the dialog is open
+   */
+  const handleEmailDialogOpen = (open: boolean) => {
+    setEmailDialogOpen(open);
+  };
 
   /**
    * Handler for expanding/collapsing the menu
@@ -106,7 +119,7 @@ export default function AppBar() {
    *
    * @todo Write up a message dialog for this
    */
-  const handleMessageSend = () => {
+  const handleNotImplemented = () => {
     const id = enqueueSnackbar(<Typography>Not implemented yet.</Typography>, {
       onClick: () => closeSnackbar(id),
     });
@@ -114,6 +127,11 @@ export default function AppBar() {
 
   return (
     <>
+      <div className="Dialogs">
+        {emailDialogOpen && (
+          <EmailDialog onClose={() => handleEmailDialogOpen(false)} />
+        )}
+      </div>
       <MenuCollapse placement="bottom" in={expanded}>
         <Box>
           <MenuList onCloseMenu={handleExpandChange} />
@@ -131,18 +149,21 @@ export default function AppBar() {
           <IconButton color="inherit" onClick={handleExpandChange}>
             <MenuIcon />
           </IconButton>
-          <StyledFab expanded={expanded} onClick={handleMessageSend}>
+          <StyledFab
+            expanded={expanded}
+            onClick={() => handleEmailDialogOpen(true)}
+          >
             <MessageIcon />
           </StyledFab>
           <Box />
           <IconButton
             sx={{ display: { xs: "none", sm: "inherit" } }}
             color="inherit"
-            onClick={handleMessageSend}
+            onClick={() => handleEmailDialogOpen(true)}
           >
             <MessageIcon />
           </IconButton>
-          <IconButton color="inherit" onClick={handleMessageSend}>
+          <IconButton color="inherit" onClick={handleNotImplemented}>
             <MoreIcon />
           </IconButton>
         </Toolbar>
