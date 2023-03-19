@@ -116,6 +116,41 @@ function scrollElementIntoView(identifier: string): void {
 }
 
 /**
+ * Send an email to the GoogleCloud API endpoint
+ *
+ * @param props -
+ * @param props.message - The message to send in the email
+ * @param props.sender - Person sending the email
+ * @returns The status of the response
+ */
+async function sendMail({
+  message,
+  sender,
+}: {
+  message: string;
+  sender: string;
+}): Promise<number> {
+  const response = await fetch(
+    "https://graceful-trees-380815.uc.r.appspot.com/send_email",
+    {
+      method: "POST",
+      mode: "cors",
+      credentials: "omit",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        message: `Sender: ${sender}\n\n${message}`,
+        recipients: ["k.edwardthom@gmail.com"],
+        subject: `Portfolio-sent email from ${sender}`,
+      }),
+    }
+  );
+
+  return response.status;
+}
+
+/**
  * To pascal case
  *
  * @param value - String that is meant to be `snake cased` and will be properly formatted into Pascal case with `_` being interpreted as spaces
@@ -128,4 +163,10 @@ function toPascalCase(value: string): string {
     .join(" ");
 }
 
-export { copyTextToClipboard, openLink, scrollElementIntoView, toPascalCase };
+export {
+  copyTextToClipboard,
+  openLink,
+  scrollElementIntoView,
+  sendMail,
+  toPascalCase,
+};
