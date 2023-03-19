@@ -130,21 +130,22 @@ async function sendMail({
   message: string;
   sender: string;
 }): Promise<number> {
-  const response = await fetch("/send_email", {
-    method: "POST",
-    mode: "cors",
-    cache: "no-cache",
-    credentials: "same-origin",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    redirect: "follow",
-    referrerPolicy: "no-referrer",
-    body: JSON.stringify({
-      receivers: ["k.edwardthom@gmail.com"],
-      message: `Sender: ${sender}\n\n${message}`,
-    }),
-  });
+  const response = await fetch(
+    "https://graceful-trees-380815.uc.r.appspot.com/send_email",
+    {
+      method: "POST",
+      mode: "cors",
+      credentials: "omit",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        message: `Sender: ${sender}\n\n${message}`,
+        recipients: ["k.edwardthom@gmail.com"],
+        subject: `Portfolio-sent email from ${sender}`,
+      }),
+    }
+  );
 
   return response.status;
 }
