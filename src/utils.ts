@@ -119,16 +119,19 @@ function scrollElementIntoView(identifier: string): void {
  * Send an email to the GoogleCloud API endpoint
  *
  * @param props -
+ * @param props.email - Email of the user sending an email
  * @param props.message - The message to send in the email
- * @param props.sender - Person sending the email
+ * @param props.name - Name of the person sending the email
  * @returns The status of the response
  */
 async function sendMail({
+  email,
   message,
-  sender,
+  name,
 }: {
+  email: string;
   message: string;
-  sender: string;
+  name: string;
 }): Promise<number> {
   const response = await fetch(
     "https://graceful-trees-380815.uc.r.appspot.com/send_email",
@@ -140,9 +143,9 @@ async function sendMail({
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        message: `Sender: ${sender}\n\n${message}`,
+        message: `Respond to: ${email}\n\n${message}`,
         recipients: ["k.edwardthom@gmail.com"],
-        subject: `Portfolio-sent email from ${sender}`,
+        subject: `Portfolio-sent email from ${name}`,
       }),
     }
   );

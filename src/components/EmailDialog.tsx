@@ -11,10 +11,12 @@ import {
   DialogTitle,
   Divider,
   IconButton,
+  LinearProgress,
   Slide,
   SlideProps,
   styled,
   TextField,
+  Typography,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { useSnackbar } from "notistack";
@@ -46,27 +48,26 @@ const Transition = forwardRef(function Transition(props: SlideProps, ref) {
 export default function EmailDialog({ onClose }: Props) {
   const [from, setFrom] = useState<string>();
   const [message, setMessage] = useState<string>();
+  const [name, setName] = useState<string>();
+  const [sending, setSending] = useState<boolean>(false);
 
   const { enqueueSnackbar } = useSnackbar();
-
-  /**
-   * Handler for message field changes
-   *
-   * @param event - Change event
-   */
-  const handleMessageChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
-    setMessage(value);
+  const maxLengths = {
+    name: 50,
+    message: 150,
   };
 
   /**
-   * Handler for name field changes
+   * Handler for field changes
    *
-   * @param event - Change event
+   * @param value - Changed value for field
+   * @param setter - The setter method to change the value
    */
-  const handleNameChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
-    const value = event.target.value;
-    setFrom(value);
+  const handleChange = (
+    value: string,
+    setter: (value: React.SetStateAction<string | undefined>) => void
+  ) => {
+    setter(value);
   };
 
   /**
@@ -76,13 +77,14 @@ export default function EmailDialog({ onClose }: Props) {
    * @returns void
    */
   const handleSendEmail = async () => {
-    if (!(message && from)) {
+    if (!(from && message && name)) {
       enqueueSnackbar("Fill in all fields!");
       return;
     }
 
+    setSending(true);
     try {
-      const status = await sendMail({ message: message, sender: from });
+      const status = await sendMail({ email: from, message, name });
 
       enqueueSnackbar(
         `Email ${status === 200 ? "successfully  sent" : "failed to send"}!`,
@@ -94,6 +96,8 @@ export default function EmailDialog({ onClose }: Props) {
       enqueueSnackbar(`Email failed to send: ${error}`, {
         variant: "error",
       });
+    } finally {
+      setSending(false);
     }
   };
 
@@ -111,26 +115,64 @@ export default function EmailDialog({ onClose }: Props) {
       <DialogContent>
         <StyledBox>
           <TextField
-            // value={from}
-            onChange={handleNameChange}
+            // value={name}
+            onChange={(event: ChangeEvent<HTMLInputElement>) =>
+              handleChange(event.target.value, setName)
+            }
+            required
             variant="filled"
-            label="Enter your name or email"
+            label="Enter your name"
+            fullWidth
+            inputProps={{ maxLength: maxLengths.name }}
+            helperText={`${
+              maxLengths.name - (name?.length || 0)
+            } characters left`}
+          />
+          <TextField
+            // value={from}
+            onChange={(event: ChangeEvent<HTMLInputElement>) =>
+              handleChange(event.target.value, setFrom)
+            }
+            required
+            variant="filled"
+            label="Enter your email to receive responses"
             fullWidth
           />
           <TextField
             // value={message}
-            onChange={handleMessageChange}
+            onChange={(event: ChangeEvent<HTMLTextAreaElement>) =>
+              handleChange(event.target.value, setMessage)
+            }
+            required
             variant="filled"
             label="Enter your message to Edward Thomas"
             multiline
             rows={8}
             fullWidth
+            inputProps={{ maxLength: maxLengths.message }}
+            helperText={`${
+              maxLengths.message - (message?.length || 0)
+            } characters left`}
           />
         </StyledBox>
         <Divider sx={{ m: 3 }} />
         <StyledBox>
-          <Button onClick={handleSendEmail} variant="contained" fullWidth>
-            Send Email
+          <Button
+            onClick={handleSendEmail}
+            variant="contained"
+            fullWidth
+            disabled={sending}
+          >
+            {sending ? (
+              <StyledBox width="100%">
+                <Typography textTransform="capitalize">
+                  Sending email...
+                </Typography>
+                <LinearProgress />
+              </StyledBox>
+            ) : (
+              <Typography textTransform="capitalize">Send Email</Typography>
+            )}
           </Button>
         </StyledBox>
       </DialogContent>
