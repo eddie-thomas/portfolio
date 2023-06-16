@@ -12,7 +12,7 @@ const KNOWN_LINKS = [
   "https://github.com/RamosThomas",
   "https://stackoverflow.com/users/14258470/lua-python-java",
   "https://docs.google.com/document/d/1LDzMgp_i8amZWFCHoO_rnBQTyUY35tb2xmDQFOgtaZ8/edit",
-  "https://www.linkedin.com/in/edward-kyle-thomas-b7050b204/?trk=public-profile-join-page",
+  "https://www.linkedin.com/in/edward-kyle-thomas/?trk=public-profile-join-page",
   "https://github.com/eddie-thomas/FinancialReact",
   "https://github.com/eddie-thomas/rpi-security",
   "https://github.com/eddie-thomas/Practice-Projects",

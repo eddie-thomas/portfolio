@@ -30,16 +30,34 @@ export const PROJECTS: Array<ContentType> = [
   {
     name: "Docusign-ALT",
     project: "https://github.com/eddie-thomas/docusign-alt",
-    description: `A friend of mine from college who runs a Jet ski rental business in Florida requested
-    I build him a web app that allows his clients/users to fill in a simple form online then autogenerates
-    a PDF his jet ski waiver for liability purposes. He previously was using Docusign, but wanted a free,
-    alternative solution.`,
-    status: Status.Started,
+    description: `An individual I know from my college days,
+    who currently operates a reputable Jet ski rental business
+    in the vibrant state of Florida, approached me with a professional
+    request. They sought my expertise to develop a web application that
+    would empower their valued clients to conveniently complete a streamlined
+    online form. The purpose of this form is to automatically generate a
+    comprehensive PDF document, specifically designed as a legally binding
+    waiver, serving the crucial function of mitigating potential liabilities
+    associated with their exhilarating watercraft activities. Despite previously
+    utilizing Docusign, this astute entrepreneur was determined to explore a
+    cost-effective alternative solution, prompting their decision to reach out to me.`,
+    status: Status.Complete,
     notes: [
-      "This project is on-going and more notes will be added as the project nears an end.",
-      `Results are expected as of ${new Date("03/15/2023").toDateString()}.`,
+      `The backend is currently hosted with Google Clouds App Engine services
+      which allows a quick spin up of the backend when needed. For the client's
+      purposes, the usage falls under Google's free tier.`,
+      `The front-end can easily be configured. Last month, the client updated
+      the waiver, added a new page to the front and it required a signature. With
+      the simple set up, I simply adjusted the JSON data that represents the fields
+      and I could do it in under 3 minutes.`,
+      `Simple and smooth approach to filling in content of a PDF and the shipping it
+      to a backend for other purposes.`,
+      `This repo does not have a boilerplate backend supplied, because I don't believe
+      a front end that takes user input and injects it into a PDF has any general use-case.
+      A developer implementing this will be able to add some AJAX/Axios/JavaScript fetch
+      mechanism that can send of the bytes of the PDF (as an array of 8-bit integers).`,
     ],
-    last_updated: new Date("02/15/2023"),
+    last_updated: new Date("06/16/2023"),
   },
   {
     name: "Financial React",
