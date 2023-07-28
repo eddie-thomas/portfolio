@@ -4,7 +4,13 @@
  */
 
 import { type ReactNode } from "react";
-import { Box, Divider, Typography } from "@mui/material";
+import {
+  Box,
+  Divider,
+  type Theme,
+  Typography,
+  useMediaQuery,
+} from "@mui/material";
 
 import { BIO } from "../content";
 import { openLink, toPascalCase } from "../utils";
@@ -32,7 +38,7 @@ export default function Bio() {
           | { [key: string]: string }
           | Date = BIO[title];
 
-        return mapComponentsToContent({
+        return MapComponentsToContent({
           content,
           title: toPascalCase(title),
         });
@@ -50,26 +56,36 @@ export default function Bio() {
  * @param props.title - Title of the section (e.g. "phone number")
  * @returns JSX.Element
  */
-function mapComponentsToContent({
+function MapComponentsToContent({
   content,
   title,
 }: {
   content: string | Array<string> | { [key: string]: string } | Date;
   title?: string;
 }) {
+  const isSmallScreen = useMediaQuery((theme: Theme) =>
+    theme.breakpoints.down("sm")
+  );
   return (
     <div className="bio__content" key={JSON.stringify(content)}>
       {title && (
-        <Typography sx={{ display: "flex" }} component={"h5"} variant="h5">
+        <Typography
+          sx={{
+            display: "flex",
+            ...(isSmallScreen && { justifyContent: "space-between" }),
+          }}
+          component={"h5"}
+          variant="h5"
+        >
           {title}
           {typeof content === "string" && (
-            <>
+            <Box display="flex">
               <Divider orientation="vertical" flexItem sx={{ mx: 3 }} />
               <CopyButton
                 content={content}
                 name={`Edward's ${title.toLowerCase()}`}
               />
-            </>
+            </Box>
           )}
         </Typography>
       )}
@@ -108,7 +124,7 @@ function mapComponentsToContent({
             return (
               <Box key={JSON.stringify(content) + title}>
                 <Typography variant="h6">{title}</Typography>
-                {mapComponentsToContent({ content: nestedContent })}
+                {MapComponentsToContent({ content: nestedContent })}
               </Box>
             );
           })}

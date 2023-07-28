@@ -228,7 +228,7 @@ function MenuList({ onCloseMenu }: { onCloseMenu: () => void }) {
         <ListItemButton
           onClick={() =>
             openLink(
-              "https://www.linkedin.com/in/edward-kyle-thomas-b7050b204/?trk=public-profile-join-page"
+              "https://www.linkedin.com/in/edward-kyle-thomas/?trk=public-profile-join-page"
             )
           }
         >
