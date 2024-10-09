@@ -28,10 +28,26 @@ export interface ContentType {
  */
 export const PROJECTS: Array<ContentType> = [
   {
+    name: "Fives",
+    project: "https://github.com/eddie-thomas/",
+    description: `Wordle app, but competitive. When I met my wife, a road trip game
+    she played was called "fives". You write down a five letter word and try to
+    guess your opponents word. After each guess, you're told how many letters
+    matched. I build it using React Native.`,
+    status: Status.Finished,
+    notes: [
+      `Google Cloud Platform and Google Firebase used for back-end/database setup.`,
+      `Not published to the Apple store.`,
+      `Mostly completed, enough that my wife and I can play while I use a laptop and she uses my phone.`,
+      `I may never complete the game`,
+    ],
+    last_updated: new Date("04/23/2024"),
+  },
+  {
     name: "Docusign-ALT",
     project: "https://github.com/eddie-thomas/docusign-alt",
     description: `An individual I know from my college days,
-    who currently operates a reputable Jet ski rental business
+    who currently operates a reputable jet ski rental business
     in the vibrant state of Florida, approached me with a professional
     request. They sought my expertise to develop a web application that
     would empower their valued clients to conveniently complete a streamlined
@@ -57,7 +73,7 @@ export const PROJECTS: Array<ContentType> = [
       A developer implementing this will be able to add some AJAX/Axios/JavaScript fetch
       mechanism that can send of the bytes of the PDF (as an array of 8-bit integers).`,
     ],
-    last_updated: new Date("06/16/2023"),
+    last_updated: new Date("10/09/2023"),
   },
   {
     name: "Financial React",
@@ -66,6 +82,8 @@ export const PROJECTS: Array<ContentType> = [
     The backend can read credit, debit, and savings statements. Currently has
     been tested with statements ranging from 2016 to 2022.`,
     notes: [
+      `Tracks all financial statements from 2016-2024. Tested and verified.`,
+      `Unfortunately, the statements must be uploaded manually, but that's okay with me.`,
       `I attempted this project when I first got out of college, and it was a failure.
       Not the best code and the method I chose did not scale well with time. See the following note.`,
       "https://github.com/thom8047/FinancialReacts_v1.0.0\nView old project here.",
@@ -74,13 +92,13 @@ export const PROJECTS: Array<ContentType> = [
     last_updated: new Date("01/22/2023"),
   },
   {
-    name: "Rpi-Security (DIY Security System)",
+    name: "RPI-Security (DIY Security System)",
     project: "https://github.com/eddie-thomas/rpi-security",
     description: `Home-made security system built onto 32-bit OS of Debian Bullseye.
     Built using a RaspberryPi, and an HC-SR501 motion sensor for detecting motion
     activity. This project was super fun because I got to work on asynchronous behavior
     in python and work some hardware skills! I made my own meter-length wires to connect
-    to the motion sensor. Created a Lego-built container that neatly holds the sensor and 
+    to the motion sensor. Created a Lego-built container that neatly holds the sensor and
     the camera, and has an attached rig that I can mount and move around.`,
     status: Status.Complete,
     notes: [
@@ -113,7 +131,7 @@ export const BIO: {
   email: "k.edwardthom@gmail.com",
   phone_number: "970-791-1490",
   self_description: [
-    `I’m a motivated individual with in-depth knowledge of languages and development tools, seeking a position in a result-oriented 
+    `I’m a motivated individual with in-depth knowledge of languages and development tools, seeking a position in a result-oriented
     company where I can use my skills to the advantage of the company while having the scope to develop my own skills. `,
   ],
   github_accounts: [
@@ -138,21 +156,21 @@ export const REFERENCES: {
   dave_mcComb: {
     email: "mccomb@semanticarts.com",
     phone_number: "",
-    description: `David McComb is the owner of the company I work at, Semantic Arts. To me he is a self-motivated, competent, and driven individual 
+    description: `David McComb is the owner of the company I work at, Semantic Arts. To me he is a self-motivated, competent, and driven individual
     that I hope to be like when I am in the later parts of my career. His forward thinking on data management in the large corporate world is solving
     real problems that can be found in most businesses. He is the well respected CTO of the company.`,
   },
   danny_hurlburt: {
     email: "danny.hurlburt@semanticarts.com",
     phone_number: "",
-    description: `Danny Hurlburt is a developer I look up to and respect. He guided me into my career by being a mentor with strong self-practices in team development, code 
+    description: `Danny Hurlburt is a developer I look up to and respect. He guided me into my career by being a mentor with strong self-practices in team development, code
     production, and development processes. He has set an example, personally, of what a professional software engineer looks like.`,
   },
   vicente_ramos: {
     email: "vicenteramos318@gmail.com",
     phone_number: "",
-    description: `Vicente Ramos was a college friend that participated in the BrightenTheBrain internship with me. We have stayed good friends since college, and although we have never worked 
-    together (professionally), he has been an encouraging dev. partner as I work full days and still try to carve out time for personal projects. He has sat in on my development processes 
+    description: `Vicente Ramos was a college friend that participated in the BrightenTheBrain internship with me. We have stayed good friends since college, and although we have never worked
+    together (professionally), he has been an encouraging dev. partner as I work full days and still try to carve out time for personal projects. He has sat in on my development processes
     and, I hope, has learned from my successes and mistakes. He is currently attending the University of Denver to get his masters in Computer Science.`,
   },
 };
