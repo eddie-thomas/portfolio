@@ -28,12 +28,29 @@ export interface ContentType {
  */
 export const PROJECTS: Array<ContentType> = [
   {
+    name: "StrumSesh",
+    project: "https://strumsesh.com/",
+    description: `My wife started teaching guitar lessons online and I built her a landing
+    page to easily convert customers. Testimonials and booking details will soon be capture
+    on-site, with rental scheduling/sign up coming soon later. If the business progresses
+    like we hope, then we'll use the site to capture student notes, scheduling, on-boarding,
+    and much more!`,
+    status: Status.Started,
+    notes: [
+      `Created landing page`,
+      `Set up connection to booking Google Form`,
+      `Tracked site conversions (e.g., capture when user visits and when user clicks the booking button)`,
+    ],
+    last_updated: new Date("09/23/2025"),
+  },
+  {
     name: "Fives",
     project: "https://github.com/eddie-thomas/",
     description: `Wordle app, but competitive. When I met my wife, a road trip game
     she played was called "fives". You write down a five letter word and try to
     guess your opponents word. After each guess, you're told how many letters
-    matched. I build it using React Native.`,
+    matched. I build it using React Native. The work is in a private repository, as
+    there were sensative environment variables in it.`,
     status: Status.Finished,
     notes: [
       `Google Cloud Platform and Google Firebase used for back-end/database setup.`,
@@ -134,13 +151,9 @@ export const BIO: {
     `I’m a motivated individual with in-depth knowledge of languages and development tools, seeking a position in a result-oriented
     company where I can use my skills to the advantage of the company while having the scope to develop my own skills. `,
   ],
-  github_accounts: [
-    "https://github.com/eddie-thomas",
-    "https://github.com/thom8047",
-    "https://github.com/RamosThomas",
-  ],
+  github_account: ["https://github.com/eddie-thomas"],
   stackoverflow: "https://stackoverflow.com/users/14258470/lua-python-java",
-  last_updated: new Date("2023-01-25T05:36:55.205Z"),
+  last_updated: new Date("2025-09-25T09:36:55.205Z"),
 };
 
 /**
@@ -158,7 +171,7 @@ export const REFERENCES: {
     phone_number: "",
     description: `David McComb is the owner of the company I work at, Semantic Arts. To me he is a self-motivated, competent, and driven individual
     that I hope to be like when I am in the later parts of my career. His forward thinking on data management in the large corporate world is solving
-    real problems that can be found in most businesses. He is the well respected CTO of the company.`,
+    real problems that can be found in most businesses. He is the well-respected CTO of the company.`,
   },
   danny_hurlburt: {
     email: "danny.hurlburt@semanticarts.com",
