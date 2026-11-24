@@ -46,7 +46,10 @@ export default function About() {
       <Grid container spacing={{ xs: 5, md: 8 }}>
         <Grid item xs={12} md={7}>
           <Typography variant="overline" component="p" color="primary" sx={{ mb: 2 }}>
-            :eddie :worksAt :SemanticArts
+            :eddie :worksAt{" "}
+            <ExternalLink href={LINKS.semanticArts} icon={false} color="inherit" sx={{ display: "inline" }}>
+              :SemanticArts
+            </ExternalLink>
           </Typography>
           <Typography variant="h1" sx={{ mb: 4 }}>
             About
@@ -140,7 +143,14 @@ function ProfileFacts() {
   const rows: Array<[string, JSX.Element]> = [
     ["a", <Box component="span" sx={{ color: "primary.main" }}>:SoftwareEngineer</Box>],
     [":name", <Box component="span" sx={{ color: "success.main" }}>"{PROFILE.fullName}"</Box>],
-    [":worksAt", <Box component="span" sx={{ color: "primary.main" }}>:SemanticArts</Box>],
+    [
+      ":worksAt",
+      <ExternalLink href={LINKS.semanticArts} icon={false} sx={{ display: "inline", fontFamily: MONO }}>
+        :SemanticArts
+      </ExternalLink>,
+    ],
+    [":basedIn", <Box component="span" sx={{ color: "success.main" }}>"{PROFILE.location}"</Box>],
+    [":studied", <Box component="span" sx={{ color: "success.main" }}>"{PROFILE.education}"</Box>],
     [
       ":built",
       <>

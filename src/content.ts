@@ -270,6 +270,7 @@ export const LINKS = {
   github: "https://github.com/eddie-thomas",
   linkedin: "https://www.linkedin.com/in/edward-kyle-thomas/",
   stackoverflow: "https://stackoverflow.com/users/14258470/lua-python-java",
+  semanticArts: "https://www.semanticarts.com/",
   resume:
     "https://docs.google.com/document/d/1LDzMgp_i8amZWFCHoO_rnBQTyUY35tb2xmDQFOgtaZ8/edit",
 };
@@ -279,36 +280,68 @@ export const PROFILE = {
   fullName: "Edward Kyle Thomas Jr",
   email: "edward.k.thomas.jr@gmail.com",
   company: "Semantic Arts",
-  headline: "I build practical software across data, the web, and hardware.",
-  // TODO: personalize — this is drafted from the projects on this site
-  intro: `I'm a software engineer who likes building tools for real people: a booking
-  page for my wife's guitar lessons, a waiver system that replaced a paid e-signature
-  service, and a motion-triggered camera made from a Raspberry Pi and Legos.`,
+  location: "Loveland, CO",
+  education: "B.S. Applied Mathematics, University of Northern Colorado",
+  headline: "I build data-centric platforms and modern web apps.",
+  intro: `I'm a software engineer with 5+ years of experience in data-centric system
+  design, full-stack development and workflow automation. I replace fragile legacy
+  tools and spreadsheets with software that stays reliable and adapts as a business
+  changes.`,
   about: [
-    `I work at Semantic Arts, a consultancy focused on data-centric architecture and
-    knowledge graphs. That work is why this site is drawn as a graph: projects and
-    the technologies behind them, linked together.`,
-    `Outside of work I take on small freelance builds and personal projects, usually
-    for the people around me. I enjoy the whole stack, from React front ends to
-    Python services to soldering leads onto a motion sensor.`,
+    `Since August 2021 I've worked at Semantic Arts, a consultancy focused on
+    data-centric architecture and knowledge graphs. There I architected and delivered
+    a configurable, data-driven internal platform that replaced a fragile legacy
+    system and now handles nearly all of the company's core operations: project
+    tracking and staffing, time tracking, payroll, and processes that used to live in
+    Excel. Payroll that took hours now runs in seconds. That work is why this site is
+    drawn as a graph: projects and the technologies behind them, linked together.`,
+    `I earned a B.S. in Applied Mathematics with a minor in Computer Science from the
+    University of Northern Colorado in May 2021, where I also competed in NCAA
+    Division I track and field. Before Semantic Arts I built a Xamarin mobile app as
+    an intern at BrightenTheBrain and validated phone-line and network-tower data as
+    an implementation specialist at Intrado.`,
+    `Outside of work I'm a parent in Loveland, Colorado, and I take on small freelance
+    builds and personal projects, usually for the people around me: a booking page for
+    my wife's guitar lessons, a waiver system that replaced a paid e-signature
+    service, and a motion-triggered camera made from a Raspberry Pi and Legos.`,
   ],
-  /** Extra skills not captured by any project's stack */
-  // TODO: add work skills (e.g. RDF, SPARQL, ontologies) if you'd like them listed
-  extraSkills: [] as Array<string>,
+  /** Skills from the résumé that aren't captured by any project's stack */
+  extraSkills: [
+    "Full-stack architecture",
+    "Semantic modeling",
+    "Data management systems",
+    "JavaScript",
+    "C#",
+    "Lua",
+    "R",
+    ".NET",
+    "Git/GitHub",
+    "Visual Studio",
+    "macOS",
+    "Windows",
+  ] as Array<string>,
 };
 
 /** Grouping used on the About page; anything not listed falls under "Other" */
 export const SKILL_GROUPS: Array<{ name: string; skills: Array<string> }> = [
   {
-    name: "Front end",
-    skills: ["React", "TypeScript", "React Native", "MUI", "Web"],
+    name: "Expertise",
+    skills: ["Full-stack architecture", "Semantic modeling", "Data management systems"],
   },
   {
-    name: "Back end & data",
-    skills: ["Python", "Flask", "asyncio", "Firebase", "pdf-lib"],
+    name: "Languages",
+    skills: ["Python", "TypeScript", "JavaScript", "C#", "Lua", "R"],
   },
-  { name: "Cloud & tools", skills: ["Google Cloud", "Google Forms", "Analytics"] },
-  { name: "Hardware", skills: ["Raspberry Pi", "Linux"] },
+  { name: "Front end", skills: ["React", "React Native", "MUI", "Web"] },
+  {
+    name: "Back end & data",
+    skills: ["Flask", "asyncio", "Firebase", "pdf-lib", ".NET"],
+  },
+  {
+    name: "Cloud & tools",
+    skills: ["Google Cloud", "Google Forms", "Analytics", "Git/GitHub", "Visual Studio"],
+  },
+  { name: "Hardware & platforms", skills: ["Raspberry Pi", "Linux", "macOS", "Windows"] },
 ];
 
 /** Every technology used across all projects, in first-seen order */
