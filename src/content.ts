@@ -84,8 +84,27 @@ export const PROJECTS: Array<Project> = [
     updated: new Date("2026-11-03"),
     links: { live: "https://www.musiqstand.com/" },
     repoNote: "Private repository (commercial product).",
-    cover: asset("musiqstand/cover.png"),
-    media: [],
+    cover: asset("musiqstand/mobile.jpg"),
+    media: [
+      { type: "image", src: asset("musiqstand/hero.jpg"), caption: "Landing page" },
+      {
+        type: "image",
+        src: asset("musiqstand/compare.jpg"),
+        caption: "Why a focused tool beats a 47-feature studio system",
+      },
+      { type: "image", src: asset("musiqstand/features.jpg"), caption: "Features, led by AI lesson planning" },
+      {
+        type: "image",
+        src: asset("musiqstand/pricing.jpg"),
+        caption: "A free plan for up to three students, and the paid Studio plan",
+      },
+      {
+        type: "image",
+        src: asset("musiqstand/signup.jpg"),
+        caption: "Sign-up starts with the plan picker",
+      },
+      { type: "image", src: asset("musiqstand/mobile.jpg"), caption: "Landing page and sign-up on a phone" },
+    ],
     sections: [
       {
         heading: "Problem",
