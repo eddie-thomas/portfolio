@@ -19,9 +19,10 @@ import { ArrowUpRight, FileText, Mail } from "lucide-react";
 import { Link as RouterLink } from "react-router-dom";
 
 import { GithubIcon, LinkedinIcon } from "../components/BrandIcons";
+import ExperienceTimeline, { positionAnchor } from "../components/ExperienceTimeline";
 import ExternalLink from "../components/ExternalLink";
 import { useContact } from "../components/layout/Layout";
-import { ALL_TECH, LINKS, PROFILE, PROJECTS, SKILL_GROUPS } from "../content";
+import { ALL_TECH, EXPERIENCE, LINKS, PROFILE, PROJECTS, SKILL_GROUPS } from "../content";
 import { MONO } from "../theme";
 
 /** Skill groups, plus anything used in a project that isn't grouped yet */
@@ -73,6 +74,15 @@ export default function About() {
             <Button variant="outlined" href={LINKS.linkedin} target="_blank" rel="noopener noreferrer" startIcon={<LinkedinIcon size={16} />}>
               LinkedIn
             </Button>
+          </Stack>
+
+          <Typography variant="h3" component="h2" sx={{ mb: 3 }}>
+            Experience
+          </Typography>
+          <Stack gap={2} sx={{ mb: 6 }}>
+            {EXPERIENCE.map((experience) => (
+              <ExperienceTimeline key={experience.id} experience={experience} />
+            ))}
           </Stack>
 
           <Typography variant="h3" component="h2" sx={{ mb: 3 }}>
@@ -140,6 +150,9 @@ export default function About() {
 
 /** Turtle-style description of me, mirroring the project facts panels */
 function ProfileFacts() {
+  const currentRoles = EXPERIENCE.flatMap((experience) => experience.positions).filter(
+    (position) => !position.end
+  );
   const rows: Array<[string, JSX.Element]> = [
     ["a", <Box component="span" sx={{ color: "primary.main" }}>:SoftwareEngineer</Box>],
     [":name", <Box component="span" sx={{ color: "success.main" }}>"{PROFILE.fullName}"</Box>],
@@ -148,6 +161,19 @@ function ProfileFacts() {
       <ExternalLink href={LINKS.semanticArts} icon={false} sx={{ display: "inline", fontFamily: MONO }}>
         :SemanticArts
       </ExternalLink>,
+    ],
+    [
+      ":holds",
+      <>
+        {currentRoles.map((position, index) => (
+          <Fragment key={position.id}>
+            <Link component={RouterLink} to={{ hash: positionAnchor(position) }} sx={{ fontFamily: MONO }}>
+              :{position.id}
+            </Link>
+            {index < currentRoles.length - 1 && ", "}
+          </Fragment>
+        ))}
+      </>,
     ],
     [":basedIn", <Box component="span" sx={{ color: "success.main" }}>"{PROFILE.location}"</Box>],
     [":studied", <Box component="span" sx={{ color: "success.main" }}>"{PROFILE.education}"</Box>],

@@ -288,17 +288,10 @@ export const PROFILE = {
   tools and spreadsheets with software that stays reliable and adapts as a business
   changes.`,
   about: [
-    `Since August 2021 I've worked at Semantic Arts, a consultancy focused on
-    data-centric architecture and knowledge graphs. There I architected and delivered
-    a configurable, data-driven internal platform that replaced a fragile legacy
-    system and now handles nearly all of the company's core operations: project
-    tracking and staffing, time tracking, payroll, and processes that used to live in
-    Excel. Payroll that took hours now runs in seconds. That work is why this site is
-    drawn as a graph: projects and the technologies behind them, linked together.`,
     `I earned a B.S. in Applied Mathematics with a minor in Computer Science from the
     University of Northern Colorado in May 2021, where I also competed in NCAA
-    Division I track and field. Before Semantic Arts I built a Xamarin mobile app as
-    an intern at BrightenTheBrain and validated phone-line and network-tower data as
+    Division I track and field. Along the way I built a Xamarin mobile app as an
+    intern at BrightenTheBrain and validated phone-line and network-tower data as
     an implementation specialist at Intrado.`,
     `Outside of work I'm a parent in Loveland, Colorado, and I take on small freelance
     builds and personal projects, usually for the people around me: a booking page for
@@ -321,6 +314,65 @@ export const PROFILE = {
     "Windows",
   ] as Array<string>,
 };
+
+/** How a position relates to the one listed after it (the older one); drawn on the edge between them */
+export type PositionLink = "concurrentWith" | "promotedFrom";
+
+export interface Position {
+  /** Local name used as the node's IRI, e.g. :StaffSemanticEngineer */
+  id: string;
+  title: string;
+  /** Team or initiative the role is scoped to */
+  scope?: string;
+  start: Date;
+  /** Omit for a current position */
+  end?: Date;
+  summary?: string;
+  /** Relation to the next position in the list */
+  link?: PositionLink;
+}
+
+export interface Experience {
+  company: string;
+  /** Local name used as the company's IRI */
+  id: string;
+  url: string;
+  employment: string;
+  /** Newest first. Positions may overlap: a title can be held alongside another */
+  positions: Array<Position>;
+}
+
+export const EXPERIENCE: Array<Experience> = [
+  {
+    company: "Semantic Arts",
+    id: "SemanticArts",
+    url: LINKS.semanticArts,
+    employment: "Full-time",
+    positions: [
+      {
+        id: "ProjectLead",
+        title: "Project Lead",
+        scope: "Spark",
+        start: new Date("2026-01-01"),
+        summary: `Lead Spark, Semantic Arts' internal operations platform, while
+        continuing as a Staff Semantic Engineer.`,
+        link: "concurrentWith",
+      },
+      {
+        id: "StaffSemanticEngineer",
+        title: "Staff Semantic Engineer",
+        start: new Date("2023-10-19"),
+        link: "promotedFrom",
+      },
+      {
+        id: "EntrySemanticEngineer",
+        title: "Entry Semantic Engineer",
+        start: new Date("2021-08-01"),
+        end: new Date("2023-10-19"),
+      },
+    ],
+  },
+];
 
 /** Grouping used on the About page; anything not listed falls under "Other" */
 export const SKILL_GROUPS: Array<{ name: string; skills: Array<string> }> = [
