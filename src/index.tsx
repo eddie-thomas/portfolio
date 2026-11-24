@@ -1,11 +1,19 @@
 /**
- * @copyright Copyright © 2018 - 2023 by Edward K Thomas Jr
+ * @copyright Copyright © 2018 - 2026 by Edward K Thomas Jr
  * @license MIT LICENSE https://opensource.org/license/mit/
  */
 
 import React from "react";
 import ReactDOM from "react-dom/client";
+
+import "@fontsource/inter/400";
+import "@fontsource/inter/500";
+import "@fontsource/inter/600";
+import "@fontsource/inter/700";
+import "@fontsource/jetbrains-mono/400";
+import "@fontsource/jetbrains-mono/600";
 import "./index.css";
+
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 

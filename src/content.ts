@@ -1,189 +1,336 @@
 /**
- * @copyright Copyright © 2018 - 2023 by Edward K Thomas Jr
+ * @copyright Copyright © 2018 - 2026 by Edward K Thomas Jr
  * @license MIT LICENSE https://opensource.org/license/mit/
  */
 
-export enum Status {
-  Unstarted,
-  Started,
-  Finished,
-  Complete,
-}
-
-export interface ContentType {
-  description: string;
-  status: Status;
-  last_updated: Date;
-  name: string;
-  notes?: Array<string>;
-  project: string;
-  todos?: Array<string>;
-}
-
 /**
- * Content object for ease of change
+ * All site content lives here so it can be edited without touching components.
  *
- * Notes:
- * - Initially wanted JSON, but that became tedious to keep up with and hard to edit with all the line breaks
+ * Adding media to a project:
+ * 1. Drop files into `public/projects/<slug>/` (keep self-hosted videos short, < 10 MB).
+ * 2. Reference them with `asset("<slug>/file.png")` in `cover` or `media`.
+ * 3. For longer videos, upload to YouTube and use `{ type: "youtube", src: "<video id>" }`.
  */
-export const PROJECTS: Array<ContentType> = [
+
+export type Status = "in-progress" | "shipped" | "shelved";
+
+export const STATUS_LABEL: Record<Status, string> = {
+  "in-progress": "In progress",
+  shipped: "Shipped",
+  shelved: "Shelved",
+};
+
+export interface Media {
+  type: "image" | "video" | "youtube";
+  /** Image/video URL (use `asset()`), or a YouTube video id */
+  src: string;
+  caption?: string;
+}
+
+export interface Section {
+  heading: string;
+  body: string;
+}
+
+export interface Project {
+  /** URL segment: /projects/<slug> */
+  slug: string;
+  name: string;
+  /** One line, shown on cards */
+  tagline: string;
+  /** Two or three sentences, shown at the top of the project page */
+  summary: string;
+  status: Status;
+  role: string;
+  builtFor?: string;
+  /** Technologies — these become nodes in the graph, so keep names consistent across projects */
+  stack: Array<string>;
+  updated: Date;
+  links: { repo?: string; live?: string; archive?: string };
+  /** Shown on the private-repo projects instead of a repo link */
+  repoNote?: string;
+  cover?: string;
+  media: Array<Media>;
+  sections: Array<Section>;
+  highlights?: Array<string>;
+  next?: Array<string>;
+}
+
+/** Resolve a file in `public/projects/` to a URL that works under the `/portfolio` base path */
+export const asset = (path: string) =>
+  `${process.env.PUBLIC_URL}/projects/${path}`;
+
+export const PROJECTS: Array<Project> = [
   {
+    slug: "strumsesh",
     name: "StrumSesh",
-    project: "https://strumsesh.com/",
-    description: `My wife started teaching guitar lessons online and I built her a landing
-    page to easily convert customers. Testimonials and booking details will soon be capture
-    on-site, with rental scheduling/sign up coming soon later. If the business progresses
-    like we hope, then we'll use the site to capture student notes, scheduling, on-boarding,
-    and much more!`,
-    status: Status.Started,
-    notes: [
-      `Created landing page`,
-      `Set up connection to booking Google Form`,
-      `Tracked site conversions (e.g., capture when user visits and when user clicks the booking button)`,
+    tagline: "A landing page that turns visitors into guitar students.",
+    summary: `My wife started teaching guitar lessons online, so I built StrumSesh to
+    turn visitors into booked students. It's live today and is the start of a small
+    platform for running the business.`,
+    status: "in-progress",
+    role: "Solo developer",
+    builtFor: "StrumSesh guitar lessons",
+    // TODO: confirm — swap in the actual framework/hosting used for the site
+    stack: ["Web", "Google Forms", "Analytics"],
+    updated: new Date("2025-09-23"),
+    links: { live: "https://strumsesh.com/" },
+    media: [],
+    sections: [
+      {
+        heading: "Problem",
+        body: `A new teaching business needs one clear place to send people, and a
+        simple way for them to book a first lesson.`,
+      },
+      {
+        heading: "Build",
+        body: `A focused landing page with a single call to action that connects to a
+        booking form. Visits and booking-button clicks are tracked, so it's clear how
+        many visitors actually convert.`,
+      },
+      {
+        heading: "What's next",
+        body: `Testimonials and booking on the site itself, then rental scheduling and
+        sign-up. If the business keeps growing, the site will handle student notes,
+        scheduling and on-boarding.`,
+      },
     ],
-    last_updated: new Date("09/23/2025"),
+    highlights: [
+      "Landing page live at strumsesh.com",
+      "Booking flow connected to a Google Form",
+      "Conversion tracking for visits and booking clicks",
+    ],
+    next: [
+      "On-site testimonials and booking",
+      "Rental scheduling and sign-up",
+      "Student notes, scheduling and on-boarding",
+    ],
   },
   {
+    slug: "fives",
     name: "Fives",
-    project: "https://github.com/eddie-thomas/",
-    description: `Wordle app, but competitive. When I met my wife, a road trip game
-    she played was called "fives". You write down a five letter word and try to
-    guess your opponents word. After each guess, you're told how many letters
-    matched. I build it using React Native. The work is in a private repository, as
-    there were sensative environment variables in it.`,
-    status: Status.Finished,
-    notes: [
-      `Google Cloud Platform and Google Firebase used for back-end/database setup.`,
-      `Not published to the Apple store.`,
-      `Mostly completed, enough that my wife and I can play while I use a laptop and she uses my phone.`,
-      `I may never complete the game`,
+    tagline: "A competitive, two-player word-guessing game for mobile.",
+    summary: `"Fives" is a road-trip game my wife played growing up. Each player picks
+    a secret five-letter word, and you take turns guessing. After every guess you're
+    told how many letters matched. I turned it into a real-time React Native app.`,
+    status: "shelved",
+    role: "Solo developer",
+    stack: ["React Native", "Firebase", "Google Cloud"],
+    updated: new Date("2024-04-23"),
+    links: {},
+    repoNote: "Private repository (contains environment secrets).",
+    media: [],
+    sections: [
+      {
+        heading: "Idea",
+        body: `It's like Wordle, but head-to-head. Instead of guessing a word of the
+        day, you're racing to crack your opponent's word before they crack yours.`,
+      },
+      {
+        heading: "Build",
+        body: `A React Native client with Firebase and Google Cloud Platform handling
+        the back end, game state and database.`,
+      },
+      {
+        heading: "Where it landed",
+        body: `It's playable end to end. My wife and I play it with one of us on a
+        laptop and the other on my phone. It isn't on the App Store, and I've shelved
+        it for now.`,
+      },
     ],
-    last_updated: new Date("04/23/2024"),
+    highlights: [
+      "Real-time two-player games backed by Firebase",
+      "Playable across devices",
+    ],
+    next: ["Polish and publish to the App Store (maybe someday)"],
   },
   {
+    slug: "docusign-alt",
     name: "Docusign-ALT",
-    project: "https://github.com/eddie-thomas/docusign-alt",
-    description: `An individual I know from my college days,
-    who currently operates a reputable jet ski rental business
-    in the vibrant state of Florida, approached me with a professional
-    request. They sought my expertise to develop a web application that
-    would empower their valued clients to conveniently complete a streamlined
-    online form. The purpose of this form is to automatically generate a
-    comprehensive PDF document, specifically designed as a legally binding
-    waiver, serving the crucial function of mitigating potential liabilities
-    associated with their exhilarating watercraft activities. Despite previously
-    utilizing Docusign, this astute entrepreneur was determined to explore a
-    cost-effective alternative solution, prompting their decision to reach out to me.`,
-    status: Status.Complete,
-    notes: [
-      `The backend is currently hosted with Google Clouds App Engine services
-      which allows a quick spin up of the backend when needed. For the client's
-      purposes, the usage falls under Google's free tier.`,
-      `The front-end can easily be configured. Last month, the client updated
-      the waiver, added a new page to the front and it required a signature. With
-      the simple set up, I simply adjusted the JSON data that represents the fields
-      and I could do it in under 3 minutes.`,
-      `Simple and smooth approach to filling in content of a PDF and the shipping it
-      to a backend for other purposes.`,
-      `This repo does not have a boilerplate backend supplied, because I don't believe
-      a front end that takes user input and injects it into a PDF has any general use-case.
-      A developer implementing this will be able to add some AJAX/Axios/JavaScript fetch
-      mechanism that can send of the bytes of the PDF (as an array of 8-bit integers).`,
+    tagline: "Signed PDF waivers for a jet ski rental, without the e-signature bill.",
+    summary: `A friend from college runs a jet ski rental business in Florida and was
+    paying for Docusign just to collect liability waivers. I built a web form that
+    fills in and signs the waiver PDF directly, which cut out the subscription.`,
+    status: "shipped",
+    role: "Freelance developer",
+    builtFor: "Jet ski rental business, Florida",
+    stack: ["React", "TypeScript", "MUI", "pdf-lib", "Google Cloud"],
+    updated: new Date("2023-10-09"),
+    links: { repo: "https://github.com/eddie-thomas/docusign-alt" },
+    media: [],
+    sections: [
+      {
+        heading: "Problem",
+        body: `Every customer has to sign a waiver before they get on the water. A
+        general-purpose e-signature service did the job, but it cost money every month
+        for what is really one form.`,
+      },
+      {
+        heading: "Build",
+        body: `A mobile-friendly React front end walks the customer through the
+        waiver. It writes their answers and signature into the PDF in the browser with
+        pdf-lib, then sends the bytes to a small back end on Google App Engine.`,
+      },
+      {
+        heading: "Result",
+        body: `The client's usage stays within Google's free tier. The form fields are
+        defined in JSON, so when the client added a new page that needed a signature,
+        the change took under three minutes.`,
+      },
     ],
-    last_updated: new Date("10/09/2023"),
+    highlights: [
+      "Form fields defined as JSON, so the waiver can change without code changes",
+      "Back end on Google App Engine, running within the free tier",
+      "Filled PDF is sent to the back end as raw bytes (Uint8Array)",
+    ],
   },
   {
+    slug: "financial-react",
     name: "Financial React",
-    project: "https://github.com/eddie-thomas/FinancialReact",
-    description: `A financial planner for parsing Wells Fargo PDF statements.
-    The backend can read credit, debit, and savings statements. Currently has
-    been tested with statements ranging from 2016 to 2022.`,
-    notes: [
-      `Tracks all financial statements from 2016-2024. Tested and verified.`,
-      `Unfortunately, the statements must be uploaded manually, but that's okay with me.`,
-      `I attempted this project when I first got out of college, and it was a failure.
-      Not the best code and the method I chose did not scale well with time. See the following note.`,
-      "https://github.com/thom8047/FinancialReacts_v1.0.0\nView old project here.",
+    tagline: "A personal finance tracker that parses bank PDF statements.",
+    summary: `A personal finance planner that reads Wells Fargo PDF statements
+    (credit, debit and savings) and turns them into data I can actually use. It has
+    tracked my statements from 2016 to 2024.`,
+    status: "shipped",
+    role: "Solo developer",
+    stack: ["React", "TypeScript", "MUI", "Python", "Flask"],
+    updated: new Date("2023-01-22"),
+    links: {
+      repo: "https://github.com/eddie-thomas/FinancialReact",
+      archive: "https://github.com/thom8047/FinancialReacts_v1.0.0",
+    },
+    media: [],
+    sections: [
+      {
+        heading: "Problem",
+        body: `Banks give you PDFs, not data. I wanted years of statements in one place
+        that I could search and analyze.`,
+      },
+      {
+        heading: "Build",
+        body: `A Python and Flask back end parses each statement type into structured
+        transactions, and a React and TypeScript front end displays them. Statements
+        are uploaded by hand, which works fine for me.`,
+      },
+      {
+        heading: "Second attempt",
+        body: `I first tried this right out of college and it didn't work out: the
+        approach didn't scale as statements piled up. This version is the rewrite, and
+        it has been tested against every statement from 2016 to 2024.`,
+      },
     ],
-    status: Status.Complete,
-    last_updated: new Date("01/22/2023"),
+    highlights: [
+      "Parses credit, debit and savings statements",
+      "Tested and verified against statements from 2016 to 2024",
+    ],
   },
   {
-    name: "RPI-Security (DIY Security System)",
-    project: "https://github.com/eddie-thomas/rpi-security",
-    description: `Home-made security system built onto 32-bit OS of Debian Bullseye.
-    Built using a RaspberryPi, and an HC-SR501 motion sensor for detecting motion
-    activity. This project was super fun because I got to work on asynchronous behavior
-    in python and work some hardware skills! I made my own meter-length wires to connect
-    to the motion sensor. Created a Lego-built container that neatly holds the sensor and
-    the camera, and has an attached rig that I can mount and move around.`,
-    status: Status.Complete,
-    notes: [
-      "Very simple project.",
-      "Built the camera/motion sensor case in legos!",
-      "Used nice wire wrapping to conceal the camera wire and the sensor's wires.",
-      "Video footage currently lives on the Pi (hope to move this to external USB connected to the Pi).",
-      "Night-vision camera is used!",
-      "Terminus (on iOS) is used for external access to the Pi.",
+    slug: "rpi-security",
+    name: "RPi-Security",
+    tagline: "A DIY motion-triggered night-vision camera on a Raspberry Pi.",
+    summary: `A home-made security system: a Raspberry Pi, an HC-SR501 motion sensor
+    and a night-vision camera, all in a Lego enclosure I built. Motion triggers
+    recording, and I can check in remotely from my phone.`,
+    status: "shipped",
+    role: "Solo builder",
+    stack: ["Python", "asyncio", "Raspberry Pi", "Linux"],
+    updated: new Date("2023-02-03"),
+    links: { repo: "https://github.com/eddie-thomas/rpi-security" },
+    media: [],
+    sections: [
+      {
+        heading: "Hardware",
+        body: `An HC-SR501 PIR motion sensor and a night-vision camera, wired to the Pi
+        with meter-long leads I made myself. Everything sits in a Lego case with a
+        movable mount, and the wires are wrapped to keep them tidy.`,
+      },
+      {
+        heading: "Software",
+        body: `Asynchronous Python on Debian Bullseye (32-bit) watches the sensor
+        through the GPIO pins and controls the camera. Footage is stored on the Pi,
+        and I access it remotely from an SSH client on my iPhone.`,
+      },
     ],
-    todos: [
-      "Replace desktop OS with lite OS, no need for a desktop.",
-      "Add firewall.",
-      "Mount on wall outside.",
-      "Move video storage to an external USB, and add a schedule script to delete old video files periodically.",
-      "Tentative: Create YouTube video for submission to Google to ask for use of the Google Drive API to post video footage to my Google drive.",
+    highlights: [
+      "Async Python reading GPIO sensors",
+      "Night-vision camera",
+      "Lego-built enclosure and mount",
     ],
-    last_updated: new Date("02/03/2023"),
+    next: [
+      "Switch to Raspberry Pi OS Lite (no desktop needed)",
+      "Add a firewall",
+      "Mount it outside",
+      "Store footage on an external USB drive and delete old files on a schedule",
+      "Maybe: upload footage to Google Drive",
+    ],
   },
 ];
 
-/**
- * Object representing myself
- */
-export const BIO: {
-  [key: string]: string | Array<string> | { [key: string]: string } | Date;
-} = {
-  name: "Edward Kyle Thomas Jr",
-  current_company: "Semantic Arts Inc.",
-  email: "k.edwardthom@gmail.com",
-  phone_number: "970-791-1490",
-  self_description: [
-    `I’m a motivated individual with in-depth knowledge of languages and development tools, seeking a position in a result-oriented
-    company where I can use my skills to the advantage of the company while having the scope to develop my own skills. `,
-  ],
-  github_account: ["https://github.com/eddie-thomas"],
+export const LINKS = {
+  github: "https://github.com/eddie-thomas",
+  linkedin: "https://www.linkedin.com/in/edward-kyle-thomas/",
   stackoverflow: "https://stackoverflow.com/users/14258470/lua-python-java",
-  last_updated: new Date("2025-09-25T09:36:55.205Z"),
+  resume:
+    "https://docs.google.com/document/d/1LDzMgp_i8amZWFCHoO_rnBQTyUY35tb2xmDQFOgtaZ8/edit",
 };
 
-/**
- * References
- */
-export const REFERENCES: {
-  [name: string]: {
-    email: string;
-    phone_number: string;
-    description: string;
-  };
-} = {
-  dave_mcComb: {
-    email: "mccomb@semanticarts.com",
-    phone_number: "",
-    description: `David McComb is the owner of the company I work at, Semantic Arts. To me he is a self-motivated, competent, and driven individual
-    that I hope to be like when I am in the later parts of my career. His forward thinking on data management in the large corporate world is solving
-    real problems that can be found in most businesses. He is the well-respected CTO of the company.`,
-  },
-  danny_hurlburt: {
-    email: "danny.hurlburt@semanticarts.com",
-    phone_number: "",
-    description: `Danny Hurlburt is a developer I look up to and respect. He guided me into my career by being a mentor with strong self-practices in team development, code
-    production, and development processes. He has set an example, personally, of what a professional software engineer looks like.`,
-  },
-  vicente_ramos: {
-    email: "vicenteramos318@gmail.com",
-    phone_number: "",
-    description: `Vicente Ramos was a college friend that participated in the BrightenTheBrain internship with me. We have stayed good friends since college, and although we have never worked
-    together (professionally), he has been an encouraging dev. partner as I work full days and still try to carve out time for personal projects. He has sat in on my development processes
-    and, I hope, has learned from my successes and mistakes. He is currently attending the University of Denver to get his masters in Computer Science.`,
-  },
+export const PROFILE = {
+  name: "Eddie Thomas",
+  fullName: "Edward Kyle Thomas Jr",
+  email: "edward.k.thomas.jr@gmail.com",
+  company: "Semantic Arts",
+  headline: "I build practical software across data, the web, and hardware.",
+  // TODO: personalize — this is drafted from the projects on this site
+  intro: `I'm a software engineer who likes building tools for real people: a booking
+  page for my wife's guitar lessons, a waiver system that replaced a paid e-signature
+  service, and a motion-triggered camera made from a Raspberry Pi and Legos.`,
+  about: [
+    `I work at Semantic Arts, a consultancy focused on data-centric architecture and
+    knowledge graphs. That work is why this site is drawn as a graph: projects and
+    the technologies behind them, linked together.`,
+    `Outside of work I take on small freelance builds and personal projects, usually
+    for the people around me. I enjoy the whole stack, from React front ends to
+    Python services to soldering leads onto a motion sensor.`,
+  ],
+  /** Extra skills not captured by any project's stack */
+  // TODO: add work skills (e.g. RDF, SPARQL, ontologies) if you'd like them listed
+  extraSkills: [] as Array<string>,
 };
+
+/** Grouping used on the About page; anything not listed falls under "Other" */
+export const SKILL_GROUPS: Array<{ name: string; skills: Array<string> }> = [
+  {
+    name: "Front end",
+    skills: ["React", "TypeScript", "React Native", "MUI", "Web"],
+  },
+  {
+    name: "Back end & data",
+    skills: ["Python", "Flask", "asyncio", "Firebase", "pdf-lib"],
+  },
+  { name: "Cloud & tools", skills: ["Google Cloud", "Google Forms", "Analytics"] },
+  { name: "Hardware", skills: ["Raspberry Pi", "Linux"] },
+];
+
+/** Every technology used across all projects, in first-seen order */
+export const ALL_TECH: Array<string> = PROJECTS.reduce<Array<string>>(
+  (acc, project) => {
+    project.stack.forEach((tech) => {
+      if (!acc.includes(tech)) acc.push(tech);
+    });
+    return acc;
+  },
+  []
+);
+
+export const getProject = (slug?: string) =>
+  PROJECTS.find((project) => project.slug === slug);
+
+/** Projects sharing at least one technology with the given project */
+export const getConnectedProjects = (project: Project) =>
+  PROJECTS.filter((other) => other.slug !== project.slug)
+    .map((other) => ({
+      project: other,
+      shared: other.stack.filter((tech) => project.stack.includes(tech)),
+    }))
+    .filter(({ shared }) => shared.length > 0)
+    .sort((a, b) => b.shared.length - a.shared.length);

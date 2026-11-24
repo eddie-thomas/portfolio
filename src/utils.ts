@@ -1,26 +1,7 @@
 /**
- * @copyright Copyright © 2018 - 2023 by Edward K Thomas Jr
+ * @copyright Copyright © 2018 - 2026 by Edward K Thomas Jr
  * @license MIT LICENSE https://opensource.org/license/mit/
  */
-
-/**
- * Known links for security purposes
- */
-const KNOWN_LINKS = [
-  "https://github.com/eddie-thomas",
-  "https://github.com/thom8047",
-  "https://github.com/RamosThomas",
-  "https://stackoverflow.com/users/14258470/lua-python-java",
-  "https://docs.google.com/document/d/1LDzMgp_i8amZWFCHoO_rnBQTyUY35tb2xmDQFOgtaZ8/edit",
-  "https://www.linkedin.com/in/edward-kyle-thomas/?trk=public-profile-join-page",
-  "https://github.com/eddie-thomas/FinancialReact",
-  "https://github.com/eddie-thomas/rpi-security",
-  "https://github.com/eddie-thomas/Practice-Projects",
-  "https://github.com/thom8047/FinancialReacts_v1.0.0",
-  "https://github.com/eddie-thomas/docusign-alt",
-  "https://github.com/eddie-thomas/",
-  "https://strumsesh.com/",
-];
 
 /**
  * Copy a string to clipboard
@@ -92,32 +73,6 @@ function copyTextToClipboard(string: string): boolean {
 }
 
 /**
- * Click handler to open a link in a separate tab
- *
- * @param link - One of the known links @see {KNOWN_LINKS}
- */
-function openLink(link: string) {
-  if (KNOWN_LINKS.includes(link)) window.open(link, "_blank")?.focus();
-  return false;
-}
-
-/**
- * Smoothly scroll element into view
- *
- * @param identifier - CSS selector string, but must be prefixed with `.` or `#` for a singular selection
- */
-function scrollElementIntoView(identifier: string): void {
-  if (!identifier.startsWith("#"))
-    throw Error(
-      `Cannot select an element using "${identifier}" as a CSS selector string.`
-    );
-
-  document.querySelector(identifier)?.scrollIntoView({
-    behavior: "smooth",
-  });
-}
-
-/**
  * Send an email to the GoogleCloud API endpoint
  *
  * @param props -
@@ -146,7 +101,7 @@ async function sendMail({
       },
       body: JSON.stringify({
         message: `Respond to: ${email}\n\n${message}`,
-        recipients: ["k.edwardthom@gmail.com"],
+        recipients: ["edward.k.thomas.jr@gmail.com"],
         subject: `Portfolio-sent email from ${name}`,
       }),
     }
@@ -156,22 +111,27 @@ async function sendMail({
 }
 
 /**
- * To pascal case
+ * Format a date as an ISO day, e.g. "2023-10-09" (UTC, so it never shifts a day)
  *
- * @param value - String that is meant to be `snake cased` and will be properly formatted into Pascal case with `_` being interpreted as spaces
+ * @param date - Date to format
  * @returns string
  */
-function toPascalCase(value: string): string {
-  return value
-    .split("_")
-    .map((word: string) => `${word[0].toUpperCase()}${word.slice(1)}`)
-    .join(" ");
+function formatDate(date: Date): string {
+  return date.toISOString().slice(0, 10);
 }
 
-export {
-  copyTextToClipboard,
-  openLink,
-  scrollElementIntoView,
-  sendMail,
-  toPascalCase,
-};
+/**
+ * Format a date as month + year, e.g. "Oct 2023"
+ *
+ * @param date - Date to format
+ * @returns string
+ */
+function formatMonth(date: Date): string {
+  return date.toLocaleDateString("en-US", {
+    month: "short",
+    year: "numeric",
+    timeZone: "UTC",
+  });
+}
+
+export { copyTextToClipboard, formatDate, formatMonth, sendMail };

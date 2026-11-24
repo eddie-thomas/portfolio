@@ -1,180 +1,136 @@
 /**
- * @copyright Copyright © 2018 - 2023 by Edward K Thomas Jr
+ * @copyright Copyright © 2018 - 2026 by Edward K Thomas Jr
  * @license MIT LICENSE https://opensource.org/license/mit/
  */
 
+import { type FormEvent, useState } from "react";
 import {
   Box,
   Button,
   Dialog,
   DialogContent,
   DialogTitle,
-  Divider,
   IconButton,
   LinearProgress,
-  Slide,
-  SlideProps,
-  styled,
+  Stack,
   TextField,
   Typography,
 } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
+import { Send, X } from "lucide-react";
 import { useSnackbar } from "notistack";
-import { type ChangeEvent, forwardRef, useState } from "react";
+
+import { PROFILE } from "../content";
+import { MONO } from "../theme";
 import { sendMail } from "../utils";
+import CopyButton from "./CopyButton";
 
-interface Props {
-  onClose: () => void;
-}
-
-const StyledBox = styled(Box)(({ theme }) => ({
-  m: theme.spacing(3),
-  "& .MuiTextField-root": {
-    marginTop: theme.spacing(3),
-  },
-}));
-
-const Transition = forwardRef(function Transition(props: SlideProps, ref) {
-  return <Slide direction="down" ref={ref} {...props} />;
-});
+const MAX = { name: 50, message: 500 };
 
 /**
- * Email dialog to send an email
+ * Dialog that sends a message to Eddie through the mail endpoint
  *
- * @param props -
- * @param props.onClose - Handler for closing dialog
- * @returns
+ * @param props.onClose - Handler for closing the dialog
  */
-export default function EmailDialog({ onClose }: Props) {
-  const [from, setFrom] = useState<string>();
-  const [message, setMessage] = useState<string>();
-  const [name, setName] = useState<string>();
-  const [sending, setSending] = useState<boolean>(false);
-
+export default function EmailDialog({ onClose }: { onClose: () => void }) {
+  const [name, setName] = useState("");
+  const [from, setFrom] = useState("");
+  const [message, setMessage] = useState("");
+  const [sending, setSending] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
-  const maxLengths = {
-    name: 50,
-    message: 150,
-  };
 
-  /**
-   * Handler for field changes
-   *
-   * @param value - Changed value for field
-   * @param setter - The setter method to change the value
-   */
-  const handleChange = (
-    value: string,
-    setter: (value: React.SetStateAction<string | undefined>) => void
-  ) => {
-    setter(value);
-  };
-
-  /**
-   * Handler for sending emails
-   *
-   * @async
-   * @returns void
-   */
-  const handleSendEmail = async () => {
-    if (!(from && message && name)) {
-      enqueueSnackbar("Fill in all fields!");
+  const handleSubmit = async (event: FormEvent) => {
+    event.preventDefault();
+    if (!(name && from && message)) {
+      enqueueSnackbar("Please fill in all fields.", { variant: "warning" });
       return;
     }
 
     setSending(true);
     try {
       const status = await sendMail({ email: from, message, name });
-
-      enqueueSnackbar(
-        `Email ${status === 200 ? "successfully  sent" : "failed to send"}!`,
-        {
-          variant: status === 200 ? "success" : "error",
-        }
-      );
+      if (status === 200) {
+        enqueueSnackbar("Message sent. Thanks!", { variant: "success" });
+        onClose();
+      } else {
+        enqueueSnackbar("Message failed to send.", { variant: "error" });
+      }
     } catch (error) {
-      enqueueSnackbar(`Email failed to send: ${error}`, {
-        variant: "error",
-      });
+      enqueueSnackbar(`Message failed to send: ${error}`, { variant: "error" });
     } finally {
       setSending(false);
     }
   };
 
   return (
-    <Dialog open onClose={onClose} TransitionComponent={Transition}>
-      <DialogTitle
-        sx={{ display: "flex", justifyContent: "space-between" }}
-        textAlign="center"
-      >
-        Send an Email to Edward Thomas
-        <IconButton size="large" onClick={onClose}>
-          <CloseIcon />
+    <Dialog
+      open
+      onClose={onClose}
+      fullWidth
+      maxWidth="sm"
+      sx={{
+        "& .MuiBackdrop-root": {
+          backdropFilter: "blur(6px)",
+          WebkitBackdropFilter: "blur(6px)",
+          backgroundColor: "rgba(14, 16, 20, 0.35)",
+        },
+      }}
+    >
+      {sending && <LinearProgress />}
+      <DialogTitle sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", pb: 0 }}>
+        Get in touch
+        <IconButton onClick={onClose} aria-label="Close">
+          <X size={20} />
         </IconButton>
       </DialogTitle>
       <DialogContent>
-        <StyledBox>
+        <Stack direction="row" alignItems="center" gap={0.5} sx={{ mb: 2 }}>
+          <Typography color="text.secondary" variant="body2">
+            Send a message below, or email{" "}
+            <Box component="span" sx={{ fontFamily: MONO, color: "text.primary" }}>
+              {PROFILE.email}
+            </Box>
+          </Typography>
+          <CopyButton content={PROFILE.email} name="email address" />
+        </Stack>
+        <Stack component="form" onSubmit={handleSubmit} gap={2} noValidate>
           <TextField
-            // value={name}
-            onChange={(event: ChangeEvent<HTMLInputElement>) =>
-              handleChange(event.target.value, setName)
-            }
+            label="Your name"
+            value={name}
+            onChange={(event) => setName(event.target.value)}
             required
-            variant="filled"
-            label="Enter your name"
             fullWidth
-            inputProps={{ maxLength: maxLengths.name }}
-            helperText={`${
-              maxLengths.name - (name?.length || 0)
-            } characters left`}
+            inputProps={{ maxLength: MAX.name }}
           />
           <TextField
-            // value={from}
-            onChange={(event: ChangeEvent<HTMLInputElement>) =>
-              handleChange(event.target.value, setFrom)
-            }
+            label="Your email"
+            type="email"
+            value={from}
+            onChange={(event) => setFrom(event.target.value)}
             required
-            variant="filled"
-            label="Enter your email to receive responses"
             fullWidth
+            helperText="So I can reply."
           />
           <TextField
-            // value={message}
-            onChange={(event: ChangeEvent<HTMLTextAreaElement>) =>
-              handleChange(event.target.value, setMessage)
-            }
+            label="Message"
+            value={message}
+            onChange={(event) => setMessage(event.target.value)}
             required
-            variant="filled"
-            label="Enter your message to Edward Thomas"
             multiline
-            rows={8}
+            minRows={5}
             fullWidth
-            inputProps={{ maxLength: maxLengths.message }}
-            helperText={`${
-              maxLengths.message - (message?.length || 0)
-            } characters left`}
+            inputProps={{ maxLength: MAX.message }}
+            helperText={`${MAX.message - message.length} characters left`}
           />
-        </StyledBox>
-        <Divider sx={{ m: 3 }} />
-        <StyledBox>
           <Button
-            onClick={handleSendEmail}
+            type="submit"
             variant="contained"
-            fullWidth
+            size="large"
             disabled={sending}
+            endIcon={<Send size={16} />}
           >
-            {sending ? (
-              <StyledBox width="100%">
-                <Typography textTransform="capitalize">
-                  Sending email...
-                </Typography>
-                <LinearProgress />
-              </StyledBox>
-            ) : (
-              <Typography textTransform="capitalize">Send Email</Typography>
-            )}
+            {sending ? "Sending…" : "Send message"}
           </Button>
-        </StyledBox>
+        </Stack>
       </DialogContent>
     </Dialog>
   );

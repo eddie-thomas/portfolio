@@ -1,90 +1,53 @@
 /**
- * @copyright Copyright © 2018 - 2023 by Edward K Thomas Jr
+ * @copyright Copyright © 2018 - 2026 by Edward K Thomas Jr
  * @license MIT LICENSE https://opensource.org/license/mit/
  */
 
-import {
-  createTheme,
-  CssBaseline,
-  Theme,
-  ThemeProvider,
-  Toolbar,
-} from "@mui/material";
-import { SnackbarProvider } from "notistack";
+import { useMemo } from "react";
+import { CssBaseline, ThemeProvider, useMediaQuery } from "@mui/material";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 
-import "./App.css";
-
-import AppBar from "./components/AppBar";
-import Bio from "./components/Bio";
-import Projects from "./components/Projects";
-import References from "./components/References";
-import Resume from "./components/Resume";
-
-const defaultTheme = createTheme();
-const font = "'Courier New', Courier, monospace";
-
-/**
- * Theme object, aside from styled components, and a bit of inline work,
- * everything to do with theming will be done here.
- */
-const THEME: Theme = createTheme(defaultTheme, {
-  components: {
-    MuiAppBar: {
-      styleOverrides: {
-        root: {
-          position: "fixed",
-          [defaultTheme.breakpoints.down("sm")]: {
-            top: "auto",
-            bottom: 0,
-          },
-          top: 0,
-          // Basically a separator to float content right
-          "& .MuiBox-root": { flexGrow: 1 },
-        },
-      },
-    },
-    MuiTypography: {
-      defaultProps: {
-        fontFamily: font,
-      },
-    },
-  },
-});
+import Layout from "./components/layout/Layout";
+import SnackbarProvider from "./components/SnackbarProvider";
+import About from "./pages/About";
+import Home from "./pages/Home";
+import NotFound from "./pages/NotFound";
+import Project from "./pages/Project";
+import { buildTheme } from "./theme";
 
 /**
  * Top-level app component
  *
- * @returns JSX.Element
+ * Routing notes:
+ * - The site is served from `/portfolio` on GitHub Pages, so the router uses
+ *   `PUBLIC_URL` (derived from `homepage` in package.json) as its basename.
+ * - `postbuild` copies index.html to 404.html so deep links survive a refresh.
  */
 export default function App() {
+  const prefersDark = useMediaQuery("(prefers-color-scheme: dark)");
+  const theme = useMemo(
+    () => buildTheme(prefersDark ? "dark" : "light"),
+    [prefersDark]
+  );
+
   return (
-    <ThemeProvider theme={THEME}>
+    <ThemeProvider theme={theme}>
       <CssBaseline />
-      <SnackbarProvider maxSnack={3}>
-        <div className="App">
-          <AppBar />
-          <Toolbar sx={{ display: { xs: "none", sm: "block" } }} />
-          <Body />
-          <Toolbar sx={{ display: { xs: "block", sm: "unset" }, my: 3 }} />
-        </div>
+      <SnackbarProvider>
+        <BrowserRouter
+          basename={process.env.PUBLIC_URL || "/"}
+          future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
+        >
+          <Routes>
+            <Route element={<Layout />}>
+              <Route index element={<Home />} />
+              <Route path="projects/:slug" element={<Project />} />
+              <Route path="about" element={<About />} />
+              <Route path="*" element={<NotFound />} />
+            </Route>
+          </Routes>
+        </BrowserRouter>
       </SnackbarProvider>
     </ThemeProvider>
-  );
-}
-
-/**
- * Body of the portfolio
- *
- * @returns JSX.Element
- */
-function Body() {
-  return (
-    <>
-      {/* Order these appropriately */}
-      <Bio />
-      <Projects />
-      <References />
-      <Resume />
-    </>
   );
 }

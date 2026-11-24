@@ -1,6 +1,6 @@
 {
-  "short_name": "Eddie's Portfolio",
-  "name": "Edward Thomas' Portfolio",
+  "short_name": "Eddie Thomas",
+  "name": "Eddie Thomas — Portfolio",
   "icons": [
     {
       "src": "favicon.ico",
@@ -10,6 +10,6 @@
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "theme_color": "#F7F7F4",
+  "background_color": "#F7F7F4"
 }

@@ -1,21 +1,19 @@
 /**
- * @copyright Copyright © 2018 - 2023 by Edward K Thomas Jr
+ * @copyright Copyright © 2018 - 2026 by Edward K Thomas Jr
  * @license MIT LICENSE https://opensource.org/license/mit/
  */
 
-import { IconButton, Tooltip, Typography } from "@mui/material";
-import { type SnackbarKey, useSnackbar } from "notistack";
-import FileCopyOutlinedIcon from "@mui/icons-material/FileCopyOutlined";
+import { IconButton, Tooltip } from "@mui/material";
+import { Copy } from "lucide-react";
+import { useSnackbar } from "notistack";
 
 import { copyTextToClipboard } from "../utils";
 
 /**
  * Copy button, indicating to user that they can copy the contents
  *
- * @param props -
  * @param props.content - The content meant to be injected into the user's clipboard
  * @param props.name - Name of what is being copied, for reference
- * @returns JSX.Element
  */
 export default function CopyButton({
   content,
@@ -24,28 +22,19 @@ export default function CopyButton({
   content: string;
   name?: string;
 }) {
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const { enqueueSnackbar } = useSnackbar();
 
-  /**
-   * Handler for click event that copy's content
-   */
   const handleClick = () => {
-    const didCopy = copyTextToClipboard(content);
-    const id: SnackbarKey | undefined = didCopy
-      ? enqueueSnackbar(
-          <Typography>Copied{` ${name}` ?? ""} to clipboard!</Typography>,
-          {
-            variant: "success",
-            onClick: () => closeSnackbar(id),
-          }
-        )
-      : undefined;
+    if (copyTextToClipboard(content))
+      enqueueSnackbar(`Copied${name ? ` ${name}` : ""} to clipboard.`, {
+        variant: "success",
+      });
   };
 
   return (
-    <Tooltip title={<Typography>Copy to clipboard.</Typography>}>
-      <IconButton size="small" onClick={handleClick}>
-        <FileCopyOutlinedIcon />
+    <Tooltip title="Copy to clipboard">
+      <IconButton size="small" onClick={handleClick} aria-label={`Copy ${name ?? "text"}`}>
+        <Copy size={16} />
       </IconButton>
     </Tooltip>
   );
