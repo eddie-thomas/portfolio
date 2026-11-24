@@ -20,7 +20,7 @@ import { useContact } from "../components/layout/Layout";
 import ProjectCard from "../components/ProjectCard";
 import StackChip from "../components/StackChip";
 import StackGraph from "../components/StackGraph";
-import { ALL_TECH, PROFILE, PROJECTS } from "../content";
+import { ALL_TECH, PROFILE, PROJECTS, projectUses } from "../content";
 import { MONO } from "../theme";
 
 const SORTED = [...PROJECTS].sort(
@@ -89,7 +89,7 @@ function Hero() {
 function ProjectsSection() {
   const { selectedTech, setSelectedTech } = useHighlight();
   const visible = selectedTech
-    ? SORTED.filter((project) => project.stack.includes(selectedTech))
+    ? SORTED.filter((project) => projectUses(project, selectedTech))
     : SORTED;
 
   return (

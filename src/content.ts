@@ -141,6 +141,93 @@ export const PROJECTS: Array<Project> = [
     ],
   },
   {
+    slug: "lifting",
+    name: "Lifting",
+    tagline: "A workout tracker for my phone, with no back end.",
+    summary: `A mobile-first workout tracker I use for my own training. Each day's
+    plan comes from one JSON file, and a countdown timer, a calendar and a weight log
+    keep me on track. There's no server: everything is saved in the browser.`,
+    status: "in-progress",
+    role: "Solo developer",
+    stack: ["React", "TypeScript", "MUI", "Vite", "GitHub Pages"],
+    updated: new Date("2026-11-06"),
+    links: {
+      repo: "https://github.com/eddie-thomas/lifting",
+      live: "https://eddie-thomas.github.io/lifting/",
+    },
+    media: [],
+    sections: [
+      {
+        heading: "Problem",
+        body: `I wanted my training plan, a workout timer and my weigh-ins in one place
+        on my phone, without signing up for another fitness app.`,
+      },
+      {
+        heading: "Build",
+        body: `A Vite, React and TypeScript app styled with MUI. The plan lives in a
+        commented JSONC file, so adding a week of workouts is a text edit. The timer
+        keeps the screen awake and ends with an alarm and haptic feedback. Daily
+        weigh-ins are smoothed into a trend line and charted against an optional
+        goal. All state lives in localStorage, so it survives reloads with no server.`,
+      },
+      {
+        heading: "Deploying",
+        body: `Every push to main runs a GitHub Actions workflow that builds the app
+        and publishes it to GitHub Pages.`,
+      },
+    ],
+    highlights: [
+      "Workout plan defined in a single JSONC file",
+      "Countdown timer with a screen wake lock, alarm and haptics",
+      "Weight trend (exponential moving average) charted against a goal",
+      "No back end: state persists in localStorage",
+    ],
+  },
+  {
+    slug: "team-lead-github-metrics",
+    name: "Team Lead GitHub Metrics",
+    tagline: "Sprint metrics and an AI-written summary from a GitHub Projects board.",
+    summary: `A command-line tool I use as a team lead to report on each iteration. It
+    pulls the iteration's issues and pull requests from a GitHub Projects board,
+    measures review times, merge times and issue velocity, and can write a summary
+    of the sprint with a local LLM.`,
+    status: "shipped",
+    role: "Solo developer",
+    stack: ["Python", "Bash", "GitHub API", "Ollama"],
+    updated: new Date("2026-05-11"),
+    links: { repo: "https://github.com/eddie-thomas/team-lead-github-metrics" },
+    media: [],
+    sections: [
+      {
+        heading: "Problem",
+        body: `Every iteration I needed the same numbers: how quickly pull requests
+        were reviewed and merged, and which issues were stuck. Collecting them by hand
+        from GitHub took time I'd rather spend with the team.`,
+      },
+      {
+        heading: "Build",
+        body: `A Bash script queries the GitHub GraphQL API, using a fine-grained,
+        read-only token, for every issue and pull request in an iteration on a
+        Projects v2 board, and saves the results as JSON. Python then computes the
+        metrics and prints a color-coded report: time to first review against a
+        24-hour target, time to merge, a per-reviewer breakdown and issue status
+        transitions, with anything active longer than 14 days flagged.`,
+      },
+      {
+        heading: "Summary",
+        body: `With --summary, each issue goes to qwen2.5:7b running locally in Ollama,
+        and the results become an executive summary saved as Markdown and as a styled
+        HTML page ready to share. The model runs on my machine, so issue data never
+        leaves it.`,
+      },
+    ],
+    highlights: [
+      "Review-time compliance against a 24-hour target",
+      "Per-reviewer and issue-velocity breakdowns",
+      "Executive summaries from a local LLM, exported as Markdown and HTML",
+    ],
+  },
+  {
     slug: "strumsesh",
     name: "StrumSesh",
     tagline: "A landing page that turns visitors into guitar students.",
@@ -150,8 +237,7 @@ export const PROJECTS: Array<Project> = [
     status: "shipped",
     role: "Solo developer",
     builtFor: "My wife",
-    // TODO: confirm — swap in the actual framework/hosting used for the site
-    stack: ["Web", "Google Forms", "Analytics"],
+    stack: ["React", "TypeScript", "MUI", "Vite", "Supabase", "Cloudflare"],
     updated: new Date("2025-09-23"),
     links: { live: "https://strumsesh.com/" },
     media: [],
@@ -163,9 +249,12 @@ export const PROJECTS: Array<Project> = [
       },
       {
         heading: "Build",
-        body: `A focused landing page with a single call to action that connects to a
-        booking form. Visits and booking-button clicks are tracked, so it's clear how
-        many visitors actually convert.`,
+        body: `A single-page React and TypeScript site, built with Vite and MUI and
+        hosted on Cloudflare Pages. One call to action opens a sign-up form where
+        parents pick a lesson time, shown in their own time zone, and the request is
+        saved to Supabase. Every visit is logged too, and a private analytics page
+        charts visits against sign-ups, so it's clear how many visitors actually
+        convert.`,
       },
       {
         heading: "Result",
@@ -175,8 +264,9 @@ export const PROJECTS: Array<Project> = [
     ],
     highlights: [
       "Landing page live at strumsesh.com",
-      "Booking flow connected to a Google Form",
-      "Conversion tracking for visits and booking clicks",
+      "Sign-up form that saves lesson requests to Supabase",
+      "Lesson times shown in each visitor's local time zone",
+      "Private analytics page charting visits against sign-ups",
       "Still how new students find my wife's lessons",
     ],
   },
@@ -228,7 +318,7 @@ export const PROJECTS: Array<Project> = [
     status: "shipped",
     role: "Freelance developer",
     builtFor: "Jet ski rental business, Florida",
-    stack: ["React", "TypeScript", "MUI", "pdf-lib", "Google Cloud"],
+    stack: ["React", "TypeScript", "MUI", "pdf-lib", "Google Cloud", "GitHub Pages"],
     updated: new Date("2023-10-09"),
     links: { repo: "https://github.com/eddie-thomas/docusign-alt" },
     media: [],
@@ -267,7 +357,7 @@ export const PROJECTS: Array<Project> = [
     tracked my statements from 2016 to 2024.`,
     status: "shipped",
     role: "Solo developer",
-    stack: ["React", "TypeScript", "MUI", "Python", "Flask"],
+    stack: ["React", "TypeScript", "MUI", "Python", "Flask", "Bash"],
     updated: new Date("2023-01-22"),
     links: {
       repo: "https://github.com/eddie-thomas/FinancialReact",
@@ -307,7 +397,7 @@ export const PROJECTS: Array<Project> = [
     recording, and I can check in remotely from my phone.`,
     status: "shipped",
     role: "Solo builder",
-    stack: ["Python", "asyncio", "Raspberry Pi", "Linux"],
+    stack: ["Python", "asyncio", "Raspberry Pi", "Linux", "Bash"],
     updated: new Date("2023-02-03"),
     links: { repo: "https://github.com/eddie-thomas/rpi-security" },
     media: [],
@@ -456,9 +546,9 @@ export const SKILL_GROUPS: Array<{ name: string; skills: Array<string> }> = [
   },
   {
     name: "Languages",
-    skills: ["Python", "TypeScript", "JavaScript", "C#", "Lua", "R"],
+    skills: ["Python", "TypeScript", "JavaScript", "C#", "Lua", "R", "Bash"],
   },
-  { name: "Front end", skills: ["React", "React Router", "React Native", "MUI", "Web"] },
+  { name: "Front end", skills: ["React", "React Router", "React Native", "MUI", "Vite"] },
   {
     name: "Back end & data",
     skills: ["Supabase", "Flask", "asyncio", "Firebase", "pdf-lib", ".NET"],
@@ -470,26 +560,50 @@ export const SKILL_GROUPS: Array<{ name: string; skills: Array<string> }> = [
       "Google Cloud",
       "Stripe",
       "Twilio",
-      "Claude API",
-      "Google Forms",
-      "Analytics",
+      "GitHub Pages",
+      "GitHub API",
       "Git/GitHub",
       "Visual Studio",
     ],
   },
+  { name: "AI", skills: ["LLMs", "Claude API", "Ollama"] },
   { name: "Hardware & platforms", skills: ["Raspberry Pi", "Linux", "macOS", "Windows"] },
 ];
 
-/** Every technology used across all projects, in first-seen order */
-export const ALL_TECH: Array<string> = PROJECTS.reduce<Array<string>>(
-  (acc, project) => {
+/**
+ * Broader nodes in the graph: a technology → the category it belongs to.
+ * The category becomes its own node, one hop out from each technology, so
+ * filtering by it matches every project that uses one of them.
+ */
+export const TECH_BROADER: Record<string, string> = {
+  "Claude API": "LLMs",
+  Ollama: "LLMs",
+};
+
+/** Every technology used across all projects, in first-seen order, followed by their broader nodes */
+export const ALL_TECH: Array<string> = (() => {
+  const all: Array<string> = [];
+  PROJECTS.forEach((project) =>
     project.stack.forEach((tech) => {
-      if (!acc.includes(tech)) acc.push(tech);
-    });
-    return acc;
-  },
-  []
-);
+      if (!all.includes(tech)) all.push(tech);
+    })
+  );
+  all.slice().forEach((tech) => {
+    const broader = TECH_BROADER[tech];
+    if (broader && !all.includes(broader)) all.push(broader);
+  });
+  return all;
+})();
+
+/** A project's stack followed by the broader nodes it reaches */
+export const techsOf = (project: Project) =>
+  project.stack.concat(
+    ALL_TECH.filter((tech) => !project.stack.includes(tech) && projectUses(project, tech))
+  );
+
+/** Whether a project uses a technology, directly or through one in its stack that's narrower */
+export const projectUses = (project: Project, tech: string) =>
+  project.stack.some((name) => name === tech || TECH_BROADER[name] === tech);
 
 export const getProject = (slug?: string) =>
   PROJECTS.find((project) => project.slug === slug);
@@ -499,7 +613,7 @@ export const getConnectedProjects = (project: Project) =>
   PROJECTS.filter((other) => other.slug !== project.slug)
     .map((other) => ({
       project: other,
-      shared: other.stack.filter((tech) => project.stack.includes(tech)),
+      shared: techsOf(project).filter((tech) => projectUses(other, tech)),
     }))
     .filter(({ shared }) => shared.length > 0)
     .sort((a, b) => b.shared.length - a.shared.length);

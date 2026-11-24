@@ -11,7 +11,7 @@ import {
   useState,
 } from "react";
 
-import { getProject } from "../content";
+import { TECH_BROADER, getProject, projectUses } from "../content";
 
 /**
  * Shared hover/selection state linking the graph, tech chips and project cards.
@@ -80,13 +80,17 @@ export function useFocus() {
 
   const isProjectActive = (slug: string) => {
     if (project) return project.slug === slug;
-    if (tech) return Boolean(getProject(slug)?.stack.includes(tech));
+    if (tech) {
+      const other = getProject(slug);
+      return Boolean(other && projectUses(other, tech));
+    }
     return true;
   };
 
   const isTechActive = (name: string) => {
-    if (project) return project.stack.includes(name);
-    if (tech) return tech === name;
+    if (project) return projectUses(project, name);
+    // A broader node lights up with its narrower ones, and vice versa
+    if (tech) return tech === name || TECH_BROADER[name] === tech || TECH_BROADER[tech] === name;
     return true;
   };
 

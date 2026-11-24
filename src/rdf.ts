@@ -15,7 +15,9 @@ import {
   LINKS,
   PROFILE,
   PROJECTS,
+  ALL_TECH,
   STATUS_LABEL,
+  TECH_BROADER,
   getProject,
   type Project,
 } from "./content";
@@ -43,8 +45,12 @@ export type Term =
 /** [subject, predicate, object] */
 export type Triple = [string, string, Term];
 
-/** Local name → IRI in the site namespace (spaces become hyphens, as in the panels) */
-const iri = (local: string) => NS + local.replace(/\s+/g, "-");
+/** A name as a Turtle-safe local name: spaces and slashes become hyphens, "C#" → "CSharp", ".NET" → "DotNET" */
+export const localName = (name: string) =>
+  name.replace(/#/g, "Sharp").replace(/^\./, "Dot").replace(/[\s/]+/g, "-");
+
+/** Local name → IRI in the site namespace */
+const iri = (local: string) => NS + localName(local);
 const node = (value: string): Term => ({ kind: "iri", value });
 const local = (name: string) => node(iri(name));
 /** Collapses the indentation that template strings in content.ts carry */
@@ -68,13 +74,14 @@ function meGraph() {
   const me = iri("eddie");
   const current = EXPERIENCE.flatMap((e) => e.positions).filter((p) => !p.end);
 
-  g.add(me, RDF_TYPE, local("SoftwareEngineer"))
+  g.add(me, RDF_TYPE, local("Person"), local("SoftwareEngineer"), local("SemanticEngineer"))
     .add(me, iri("name"), text(PROFILE.fullName))
     .add(me, iri("worksAt"), local(EXPERIENCE[0]?.id ?? "SemanticArts"))
     .add(me, iri("holds"), ...current.map((p) => local(p.id)))
     .add(me, iri("basedIn"), text(PROFILE.location))
     .add(me, iri("studied"), text(PROFILE.education))
     .add(me, iri("built"), ...PROJECTS.map((p) => local(p.slug)))
+    .add(me, iri("skilledIn"), ...PROFILE.extraSkills.filter((s) => !ALL_TECH.includes(s)).map(local))
     .add(me, iri("github"), node(LINKS.github))
     .add(me, iri("linkedin"), node(LINKS.linkedin))
     .add(me, iri("stackoverflow"), node(LINKS.stackoverflow));
@@ -125,6 +132,11 @@ function projectGraph(project: Project) {
     .add(subject, iri("repo"), project.links.repo ? node(project.links.repo) : undefined)
     .add(subject, iri("previousVersion"), project.links.archive ? node(project.links.archive) : undefined)
     .add(subject, iri("repoNote"), project.repoNote ? text(project.repoNote) : undefined);
+
+  // One hop out: narrower technologies point to their broader node
+  project.stack.forEach((tech) => {
+    if (TECH_BROADER[tech]) g.add(iri(tech), iri("broader"), local(TECH_BROADER[tech]));
+  });
   return g.triples;
 }
 
@@ -237,7 +249,8 @@ export function routeFor(value: string): string | undefined {
     const position = experience.positions.find((p) => p.id === name);
     if (position) return `/about#position-${position.id}`;
   }
-  const tech = PROJECTS.flatMap((p) => p.stack).find((t) => t.replace(/\s+/g, "-") === name);
+  const tech = ALL_TECH.find((t) => localName(t) === name);
   if (tech) return `/?tech=${encodeURIComponent(tech)}#projects`;
+  if (PROFILE.extraSkills.some((s) => localName(s) === name)) return "/about";
   return undefined;
 }

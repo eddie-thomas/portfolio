@@ -7,7 +7,8 @@ import { type KeyboardEvent, useMemo } from "react";
 import { Box, Typography, useTheme } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
-import { ALL_TECH, PROJECTS } from "../content";
+import { ALL_TECH, PROJECTS, TECH_BROADER, projectUses } from "../content";
+import { localName } from "../rdf";
 import { MONO } from "../theme";
 import { useFocus, useHighlight } from "./HighlightContext";
 
@@ -55,7 +56,7 @@ function computeLayout() {
     let sx = 0;
     let sy = 0;
     PROJECTS.forEach((project) => {
-      if (!project.stack.includes(tech)) return;
+      if (!projectUses(project, tech)) return;
       const point = projects.get(project.slug)!;
       sx += Math.cos(point.angle);
       sy += Math.sin(point.angle);
@@ -97,8 +98,6 @@ const curve = (a: Point, b: Point, pull = 0.25) => {
   return `M${a.x},${a.y} Q${qx},${qy} ${b.x},${b.y}`;
 };
 
-const toId = (value: string) => value.replace(/\s+/g, "-");
-
 export default function StackGraph() {
   const theme = useTheme();
   const navigate = useNavigate();
@@ -132,12 +131,13 @@ export default function StackGraph() {
   const matches = project
     ? project.stack.length
     : tech
-    ? PROJECTS.filter((p) => p.stack.includes(tech)).length
+    ? PROJECTS.filter((p) => projectUses(p, tech)).length
     : PROJECTS.length;
+  const isBroader = Boolean(tech && Object.values(TECH_BROADER).includes(tech));
   const query = project
     ? `:${project.slug} :uses ?tech`
     : tech
-    ? `?project :uses :${toId(tech)}`
+    ? `?project :uses${isBroader ? "/:broader" : ""} :${localName(tech)}`
     : `?project a :Project`;
 
   const labelProps = {
@@ -195,6 +195,25 @@ export default function StackGraph() {
             );
           })
         )}
+
+        {/* Edges: tech → broader tech */}
+        {Object.entries(TECH_BROADER).map(([narrower, broader]) => {
+          const from = layout.techs.get(narrower);
+          const to = layout.techs.get(broader);
+          if (!from || !to) return null;
+          const active = isTechActive(narrower) && isTechActive(broader);
+          return (
+            <path
+              key={`${narrower}-${broader}`}
+              d={curve(from, to, 0.5)}
+              fill="none"
+              stroke={hasFocus && active ? accent : line}
+              strokeWidth={hasFocus && active ? 1.75 : 1.25}
+              strokeDasharray="3 4"
+              style={fade(active)}
+            />
+          );
+        })}
 
         {/* Centre node */}
         <g style={fade(!hasFocus)}>

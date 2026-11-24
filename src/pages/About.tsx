@@ -154,7 +154,12 @@ function ProfileFacts() {
     (position) => !position.end
   );
   const rows: Array<[string, JSX.Element]> = [
-    ["a", <Box component="span" sx={{ color: "primary.main" }}>:SoftwareEngineer</Box>],
+    [
+      "a",
+      <Box component="span" sx={{ color: "primary.main" }}>
+        :Person, :SoftwareEngineer, :SemanticEngineer
+      </Box>,
+    ],
     [":name", <Box component="span" sx={{ color: "success.main" }}>"{PROFILE.fullName}"</Box>],
     [
       ":worksAt",
