@@ -73,10 +73,13 @@ function copyTextToClipboard(string: string): boolean {
 }
 
 /**
- * Send an email to the GoogleCloud API endpoint
+ * Send an email through Web3Forms (https://web3forms.com).
+ *
+ * The access key only routes mail to the inbox it was issued for, so it is
+ * safe to ship in client code. It is read from REACT_APP_WEB3FORMS_KEY at build time.
  *
  * @param props -
- * @param props.email - Email of the user sending an email
+ * @param props.email - Email of the user sending an email (used as Reply-To)
  * @param props.message - The message to send in the email
  * @param props.name - Name of the person sending the email
  * @returns The status of the response
@@ -90,22 +93,27 @@ async function sendMail({
   message: string;
   name: string;
 }): Promise<number> {
-  const response = await fetch(
-    "https://graceful-trees-380815.uc.r.appspot.com/send_email",
-    {
-      method: "POST",
-      mode: "cors",
-      credentials: "omit",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        message: `Respond to: ${email}\n\n${message}`,
-        recipients: ["edward.k.thomas.jr@gmail.com"],
-        subject: `Portfolio-sent email from ${name}`,
-      }),
-    }
-  );
+  const accessKey = process.env.REACT_APP_WEB3FORMS_KEY;
+  if (!accessKey) {
+    throw new Error("REACT_APP_WEB3FORMS_KEY is not set");
+  }
+
+  const response = await fetch("https://api.web3forms.com/submit", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+    body: JSON.stringify({
+      access_key: accessKey,
+      subject: `Portfolio-sent email from ${name}`,
+      from_name: name,
+      name,
+      email,
+      message,
+      botcheck: "",
+    }),
+  });
 
   return response.status;
 }
