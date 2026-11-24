@@ -147,7 +147,7 @@ export const PROJECTS: Array<Project> = [
     summary: `A mobile-first workout tracker I use for my own training. Each day's
     plan comes from one JSON file, and a countdown timer, a calendar and a weight log
     keep me on track. There's no server: everything is saved in the browser.`,
-    status: "in-progress",
+    status: "shipped",
     role: "Solo developer",
     stack: ["React", "TypeScript", "MUI", "Vite", "GitHub Pages"],
     updated: new Date("2026-11-06"),
