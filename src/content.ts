@@ -155,7 +155,19 @@ export const PROJECTS: Array<Project> = [
       repo: "https://github.com/eddie-thomas/lifting",
       live: "https://eddie-thomas.github.io/lifting/",
     },
-    media: [],
+    cover: asset("lifting/cover.jpg"),
+    media: [
+      {
+        type: "image",
+        src: asset("lifting/workout-day.jpg"),
+        caption: "A day's plan, the countdown timer and the active exercise's steps",
+      },
+      {
+        type: "image",
+        src: asset("lifting/weight.jpg"),
+        caption: "Training calendar, weight trend toward a goal and the daily weigh-in",
+      },
+    ],
     sections: [
       {
         heading: "Problem",
@@ -240,7 +252,20 @@ export const PROJECTS: Array<Project> = [
     stack: ["React", "TypeScript", "MUI", "Vite", "Supabase", "Cloudflare"],
     updated: new Date("2025-09-23"),
     links: { live: "https://strumsesh.com/" },
-    media: [],
+    cover: asset("strumsesh/cover.jpg"),
+    media: [
+      { type: "image", src: asset("strumsesh/hero.jpg"), caption: "Landing page" },
+      {
+        type: "image",
+        src: asset("strumsesh/signup.jpg"),
+        caption: "Booking form, with lesson times in the visitor's time zone",
+      },
+      {
+        type: "image",
+        src: asset("strumsesh/mobile.jpg"),
+        caption: "The same pages on a phone",
+      },
+    ],
     sections: [
       {
         heading: "Problem",
