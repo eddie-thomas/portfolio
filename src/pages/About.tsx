@@ -195,7 +195,7 @@ function ProfileFacts() {
   return (
     <Paper variant="outlined" sx={{ p: 2.5, fontFamily: MONO, fontSize: "0.8rem", lineHeight: 1.9 }}>
       <Typography variant="overline" component="p" color="text.secondary" sx={{ mb: 1 }}>
-        # me.ttl
+        # <Link component={RouterLink} to={"/me.ttl"} color="inherit" title="View the full Turtle file">me.ttl</Link>
       </Typography>
       <Box sx={{ color: "primary.main", fontWeight: 600 }}>:eddie</Box>
       <Box sx={{ display: "grid", gridTemplateColumns: "auto 1fr", columnGap: 1.5, pl: 2 }}>

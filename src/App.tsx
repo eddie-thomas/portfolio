@@ -13,6 +13,8 @@ import About from "./pages/About";
 import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
 import Project from "./pages/Project";
+import TurtlePage from "./pages/TurtlePage";
+import { experienceFile, factsFile, meFile } from "./rdf";
 import { buildTheme } from "./theme";
 
 /**
@@ -43,6 +45,10 @@ export default function App() {
               <Route index element={<Home />} />
               <Route path="projects/:slug" element={<Project />} />
               <Route path="about" element={<About />} />
+              {/* Turtle views of the site's data; .ttl paths still fall back to index.html */}
+              <Route path="me.ttl" element={<TurtlePage getFile={meFile} />} />
+              <Route path="experience.ttl" element={<TurtlePage getFile={experienceFile} />} />
+              <Route path="projects/:slug/facts.ttl" element={<TurtlePage getFile={factsFile} />} />
               <Route path="*" element={<NotFound />} />
             </Route>
           </Routes>

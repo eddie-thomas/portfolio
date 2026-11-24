@@ -3,7 +3,8 @@
  * @license MIT LICENSE https://opensource.org/license/mit/
  */
 
-import { Box, Chip, Paper, Stack, Typography, alpha } from "@mui/material";
+import { Box, Chip, Link, Paper, Stack, Typography, alpha } from "@mui/material";
+import { Link as RouterLink } from "react-router-dom";
 
 import { type Experience, type Position, type PositionLink } from "../content";
 import { MONO } from "../theme";
@@ -50,7 +51,7 @@ export default function ExperienceTimeline({ experience }: { experience: Experie
   return (
     <Paper variant="outlined" sx={{ p: { xs: 2, sm: 2.5 } }}>
       <Typography variant="overline" component="p" color="text.secondary" sx={{ mb: 1.5, fontFamily: MONO }}>
-        # experience.ttl
+        # <Link component={RouterLink} to={"/experience.ttl"} color="inherit" title="View the full Turtle file">experience.ttl</Link>
       </Typography>
 
       <Stack direction="row" gap={1.75} alignItems="center" sx={{ mb: 2.5 }}>

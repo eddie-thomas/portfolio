@@ -82,7 +82,7 @@ export default function FactsPanel({ project }: { project: Project }) {
       sx={{ p: 2.5, fontFamily: MONO, fontSize: "0.8rem", lineHeight: 1.9 }}
     >
       <Typography variant="overline" component="p" color="text.secondary" sx={{ mb: 1 }}>
-        # facts.ttl
+        # <Link component={RouterLink} to={`/projects/${project.slug}/facts.ttl`} color="inherit" title="View the full Turtle file">facts.ttl</Link>
       </Typography>
       <Box sx={{ color: "primary.main", fontWeight: 600 }}>:{project.slug}</Box>
       <Box
