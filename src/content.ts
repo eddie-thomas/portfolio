@@ -7,7 +7,7 @@
  * All site content lives here so it can be edited without touching components.
  *
  * Adding media to a project:
- * 1. Drop files into `public/projects/<slug>/` (keep self-hosted videos short, < 10 MB).
+ * 1. Drop files into `public/media/<slug>/` (keep self-hosted videos short, < 10 MB).
  * 2. Reference them with `asset("<slug>/file.png")` in `cover` or `media`.
  * 3. For longer videos, upload to YouTube and use `{ type: "youtube", src: "<video id>" }`.
  */
@@ -56,21 +56,100 @@ export interface Project {
   next?: Array<string>;
 }
 
-/** Resolve a file in `public/projects/` to a URL that works under the `/portfolio` base path */
+/** Resolve a file in `public/media/` to a URL that works under the `/portfolio` base path */
 export const asset = (path: string) =>
-  `${process.env.PUBLIC_URL}/projects/${path}`;
+  `${process.env.PUBLIC_URL}/media/${path}`;
 
 export const PROJECTS: Array<Project> = [
+  {
+    slug: "musiqstand",
+    name: "Musiqstand",
+    tagline: "The business side of teaching music lessons, on autopilot.",
+    summary: `Musiqstand runs the business side of an independent music studio:
+    scheduling, reminders and payment requests. It's my most complete project so
+    far. My wife runs her studio on it every week, and I'm still building it.`,
+    status: "in-progress",
+    role: "Solo founder and developer",
+    builtFor: "Independent music teachers",
+    stack: [
+      "React",
+      "TypeScript",
+      "React Router",
+      "Cloudflare",
+      "Supabase",
+      "Stripe",
+      "Twilio",
+      "Claude API",
+    ],
+    updated: new Date("2026-11-03"),
+    links: { live: "https://www.musiqstand.com/" },
+    repoNote: "Private repository (commercial product).",
+    cover: asset("musiqstand/cover.png"),
+    media: [],
+    sections: [
+      {
+        heading: "Problem",
+        body: `My wife teaches music lessons, mostly to kids. Her studio ran on texts,
+        emails and Venmo, and she nearly lost three students to emails that got
+        missed. StrumSesh got students in the door. Musiqstand handles everything
+        that comes after they book.`,
+      },
+      {
+        heading: "How it works",
+        body: `A teacher sets up rate packages and their Venmo, Zelle or PayPal
+        details. Then they either add a student or share a public booking link. That
+        one enrollment fills in every lesson in the billing period and schedules
+        reminders and payment requests over email and text. Messages go out under the
+        teacher's name, so parents hear from their teacher, not from an app. A daily
+        job creates the next billing cycle so lessons never quietly stop. Teachers
+        also get an AI lesson-planning chat and an earnings view with CSV export and
+        payment receipts.`,
+      },
+      {
+        heading: "Under the hood",
+        body: `It's a server-rendered React Router v7 app on Cloudflare Workers, with
+        Postgres on Supabase. All database access happens on the server, and every
+        query is scoped to the signed-in teacher. Lessons are stored in the
+        teacher's IANA time zone and converted one at a time, so daylight saving
+        never moves a lesson. Stripe Billing handles subscriptions, Twilio sends
+        texts (the A2P 10DLC registration is approved), Resend sends email and Claude
+        powers the lesson planner. Plan limits are enforced on the server, including
+        on the public booking form.`,
+      },
+      {
+        heading: "Where it's at",
+        body: `It's live at musiqstand.com with a free plan for up to three students
+        and a paid Studio plan with no limit. Teachers are paid directly, and
+        Musiqstand never takes a commission. Since April 2026 it has grown to over
+        400 commits and 39 test suites. Right now I'm focused on getting it to
+        teachers beyond our own household.`,
+      },
+    ],
+    highlights: [
+      "Used every week to run a real music studio",
+      "One enrollment generates the lessons, reminders and payment requests",
+      "Email and SMS sent in the teacher's name, with an audit trail for text consent",
+      "Time-zone-aware scheduling that holds up across daylight saving changes",
+      "Public booking links with Turnstile bot checks and server-side plan limits",
+      "Subscriptions with a 30-day trial through Stripe Billing",
+    ],
+    next: [
+      "Usage limits for AI lesson planning on each plan",
+      "A production environment separate from staging",
+      "Card payments through Stripe Connect",
+      "Onboarding the first teachers outside my family",
+    ],
+  },
   {
     slug: "strumsesh",
     name: "StrumSesh",
     tagline: "A landing page that turns visitors into guitar students.",
     summary: `My wife started teaching guitar lessons online, so I built StrumSesh to
-    turn visitors into booked students. It's live today and is the start of a small
-    platform for running the business.`,
-    status: "in-progress",
+    turn visitors into booked students. It's done, and it's still how new students
+    find her and book their first lesson.`,
+    status: "shipped",
     role: "Solo developer",
-    builtFor: "StrumSesh guitar lessons",
+    builtFor: "My wife",
     // TODO: confirm — swap in the actual framework/hosting used for the site
     stack: ["Web", "Google Forms", "Analytics"],
     updated: new Date("2025-09-23"),
@@ -89,21 +168,16 @@ export const PROJECTS: Array<Project> = [
         many visitors actually convert.`,
       },
       {
-        heading: "What's next",
-        body: `Testimonials and booking on the site itself, then rental scheduling and
-        sign-up. If the business keeps growing, the site will handle student notes,
-        scheduling and on-boarding.`,
+        heading: "Result",
+        body: `My wife uses it to bring in new students. The work I'd planned next,
+        like scheduling, onboarding and payments, became its own product: Musiqstand.`,
       },
     ],
     highlights: [
       "Landing page live at strumsesh.com",
       "Booking flow connected to a Google Form",
       "Conversion tracking for visits and booking clicks",
-    ],
-    next: [
-      "On-site testimonials and booking",
-      "Rental scheduling and sign-up",
-      "Student notes, scheduling and on-boarding",
+      "Still how new students find my wife's lessons",
     ],
   },
   {
@@ -384,14 +458,24 @@ export const SKILL_GROUPS: Array<{ name: string; skills: Array<string> }> = [
     name: "Languages",
     skills: ["Python", "TypeScript", "JavaScript", "C#", "Lua", "R"],
   },
-  { name: "Front end", skills: ["React", "React Native", "MUI", "Web"] },
+  { name: "Front end", skills: ["React", "React Router", "React Native", "MUI", "Web"] },
   {
     name: "Back end & data",
-    skills: ["Flask", "asyncio", "Firebase", "pdf-lib", ".NET"],
+    skills: ["Supabase", "Flask", "asyncio", "Firebase", "pdf-lib", ".NET"],
   },
   {
     name: "Cloud & tools",
-    skills: ["Google Cloud", "Google Forms", "Analytics", "Git/GitHub", "Visual Studio"],
+    skills: [
+      "Cloudflare",
+      "Google Cloud",
+      "Stripe",
+      "Twilio",
+      "Claude API",
+      "Google Forms",
+      "Analytics",
+      "Git/GitHub",
+      "Visual Studio",
+    ],
   },
   { name: "Hardware & platforms", skills: ["Raspberry Pi", "Linux", "macOS", "Windows"] },
 ];
